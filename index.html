@@ -9,43 +9,52 @@
   :root {
     --sage:       #4a7c59;
     --sage-mid:   #5a9169;
-    --sage-light: #7aad89;
     --sage-pale:  #c8dece;
     --sage-wash:  #eef5f0;
-    --stone:      #8a7968;
-    --stone-light:#b5a898;
     --stone-pale: #e8e0d8;
     --stone-wash: #f5f1ec;
     --cream:      #faf7f2;
     --cream2:     #f2ede6;
     --warm-white: #ffffff;
-    --bark:       #5c4a3a;
-    --bark-mid:   #7a6252;
     --ink:        #2d2520;
     --ink-mid:    #4a3d35;
     --ink-soft:   #7a6d65;
     --ink-ghost:  #b8ada5;
     --ink-mist:   #d8cfc8;
     --terracotta: #c4714a;
-    --terra-pale: #f5e8e0;
     --sky:        #6a9ab0;
     --sky-pale:   #e0ecf2;
     --gold:       #c8933a;
-    --gold-pale:  #f5e8d0;
     --green-pill: #2d6a45;
     --green-bg:   #e8f4ec;
     --amber-pill: #8a5e20;
     --amber-bg:   #fdf0dc;
     --rose-pill:  #8a3a3a;
     --rose-bg:    #faeaea;
-    --mist-pill:  #5a6a5a;
-    --mist-bg:    #eef2ee;
-    --r:          8px;
-    --r-lg:       14px;
-    --r-xl:       20px;
-    --shadow-sm:  0 1px 4px rgba(45,37,32,0.06);
-    --shadow:     0 3px 14px rgba(45,37,32,0.09);
-    --shadow-lg:  0 8px 32px rgba(45,37,32,0.12);
+    --r:    8px;
+    --r-lg: 14px;
+    --r-xl: 20px;
+    --shadow-sm: 0 1px 4px rgba(45,37,32,0.06);
+    --shadow:    0 3px 14px rgba(45,37,32,0.09);
+    /* theme tokens — overridden for upsize */
+    --t-hdr1: #4a7c59; --t-hdr2: #3d6b4a; --t-hdr3: #2e5238;
+    --t-accent: #4a7c59;
+    --t-accent-pale: #eef5f0;
+    --t-accent-border: #c8dece;
+    --t-focus: rgba(74,124,89,0.12);
+    --t-th1: #4a7c59; --t-th2: #5a9169;
+    --t-sweet1: #eef5f0; --t-sweet2: #dff0e6; --t-sweet-bd: #c8dece;
+  }
+
+  body.up {
+    --t-hdr1: #1e5f96; --t-hdr2: #174d7c; --t-hdr3: #103a5e;
+    --t-accent: #1e6fa8;
+    --t-accent-pale: #ddeef8;
+    --t-accent-border: #99caea;
+    --t-focus: rgba(30,111,168,0.12);
+    --t-th1: #1e6fa8; --t-th2: #3a8ac0;
+    --t-sweet1: #ddeef8; --t-sweet2: #c0e0f5; --t-sweet-bd: #90c8e8;
+    background: #eef5fc;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -58,9 +67,9 @@
     min-height: 100vh;
     font-size: 14px;
     line-height: 1.6;
+    transition: background 0.4s ease;
   }
 
-  /* ── TEXTURE OVERLAY ── */
   body::before {
     content: '';
     position: fixed; inset: 0;
@@ -71,413 +80,187 @@
   /* ── HEADER ── */
   .header {
     position: relative; z-index: 1;
-    background: linear-gradient(160deg, var(--sage) 0%, #3d6b4a 55%, #2e5238 100%);
-    padding: 0;
-    overflow: hidden;
+    background: linear-gradient(160deg, var(--t-hdr1) 0%, var(--t-hdr2) 55%, var(--t-hdr3) 100%);
+    padding: 0; overflow: hidden;
+    transition: background 0.4s ease;
   }
-  .header-leaves {
-    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
-  }
-  .leaf {
-    position: absolute;
-    opacity: 0.12;
-    font-size: 80px;
-    line-height: 1;
-    animation: sway 8s ease-in-out infinite alternate;
-  }
+  .header-leaves { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .leaf { position: absolute; opacity: 0.12; font-size: 80px; line-height: 1; animation: sway 8s ease-in-out infinite alternate; }
   .leaf:nth-child(1) { top: -10px; right: 40px; font-size: 110px; animation-delay: 0s; }
   .leaf:nth-child(2) { bottom: -15px; right: 140px; font-size: 70px; animation-delay: -3s; }
   .leaf:nth-child(3) { top: 20px; right: 200px; font-size: 50px; animation-delay: -5s; }
   .leaf:nth-child(4) { bottom: 0; left: -20px; font-size: 90px; animation-delay: -2s; opacity: 0.07; }
-  @keyframes sway {
-    from { transform: rotate(-4deg) scale(1); }
-    to   { transform: rotate(4deg) scale(1.04); }
-  }
+  @keyframes sway { from { transform: rotate(-4deg) scale(1); } to { transform: rotate(4deg) scale(1.04); } }
 
-  .header-inner {
-    max-width: 1040px; margin: 0 auto;
-    padding: 2.5rem 2rem 2.25rem;
-    position: relative; z-index: 1;
-  }
-
+  .header-inner { max-width: 1040px; margin: 0 auto; padding: 2.5rem 2rem 2.25rem; position: relative; z-index: 1; }
   .header-eyebrow {
     display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 20px;
-    padding: 3px 12px;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px; padding: 3px 12px;
     font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgba(255,255,255,0.85); font-weight: 600;
-    margin-bottom: 1rem;
+    color: rgba(255,255,255,0.85); font-weight: 600; margin-bottom: 1rem;
   }
   .header-eyebrow svg { width: 10px; height: 10px; opacity: 0.8; }
-
-  .header h1 {
-    font-family: 'Lora', Georgia, serif;
-    font-size: clamp(1.9rem, 4.5vw, 3rem);
-    font-weight: 600;
-    color: #ffffff;
-    line-height: 1.1;
-    margin-bottom: 0.6rem;
-    letter-spacing: -0.01em;
-  }
+  .header h1 { font-family: 'Lora', Georgia, serif; font-size: clamp(1.9rem, 4.5vw, 3rem); font-weight: 600; color: #fff; line-height: 1.1; margin-bottom: 0.6rem; letter-spacing: -0.01em; }
   .header h1 em { font-style: italic; font-weight: 400; color: rgba(255,255,255,0.8); }
+  .header-sub { font-size: 14px; color: rgba(255,255,255,0.65); font-weight: 300; max-width: 500px; line-height: 1.7; }
 
-  .header-sub {
-    font-size: 14px; color: rgba(255,255,255,0.65);
-    font-weight: 300; max-width: 500px; line-height: 1.7;
-  }
+  .mode-toggle { display: inline-flex; margin-top: 1.5rem; background: rgba(0,0,0,0.2); border-radius: 30px; padding: 4px; gap: 2px; }
+  .mode-btn { padding: 7px 20px; border-radius: 26px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 600; border: none; cursor: pointer; transition: all 0.25s ease; color: rgba(255,255,255,0.6); background: transparent; }
+  .mode-btn.active { background: #fff; color: var(--t-accent); box-shadow: var(--shadow); }
 
-  /* header mode toggle */
-  .mode-toggle {
-    display: inline-flex; margin-top: 1.5rem;
-    background: rgba(0,0,0,0.2);
-    border-radius: 30px; padding: 4px;
-    gap: 2px;
-  }
-  .mode-btn {
-    padding: 7px 20px; border-radius: 26px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
-    border: none; cursor: pointer;
-    transition: all 0.25s ease;
-    color: rgba(255,255,255,0.6);
-    background: transparent;
-  }
-  .mode-btn.active {
-    background: #ffffff;
-    color: var(--sage);
-    box-shadow: var(--shadow);
-  }
-
-  /* header stats strip */
-  .header-stats {
-    display: flex; gap: 0; margin-top: 1.75rem;
-    background: rgba(0,0,0,0.18);
-    border-radius: var(--r-lg); overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.1);
-    flex-wrap: wrap;
-  }
-  .hstat {
-    flex: 1; min-width: 130px;
-    padding: 12px 16px;
-    border-right: 1px solid rgba(255,255,255,0.08);
-  }
+  .header-stats { display: flex; gap: 0; margin-top: 1.75rem; background: rgba(0,0,0,0.18); border-radius: var(--r-lg); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+  .hstat { flex: 1; min-width: 130px; padding: 12px 16px; border-right: 1px solid rgba(255,255,255,0.08); }
   .hstat:last-child { border-right: none; }
   .hstat-l { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); font-weight: 600; margin-bottom: 3px; }
-  .hstat-v { font-family: 'Lora', serif; font-size: 17px; color: #ffffff; font-weight: 500; }
+  .hstat-v { font-family: 'Lora', serif; font-size: 17px; color: #fff; font-weight: 500; }
 
   /* ── PAGE ── */
   .page { max-width: 1040px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
-
-  /* ── SECTION HEADING ── */
-  .section-head {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 1rem;
-  }
-  .section-icon {
-    width: 32px; height: 32px;
-    background: var(--sage-wash);
-    border: 1px solid var(--sage-pale);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; flex-shrink: 0;
-  }
-  .section-title {
-    font-family: 'Lora', serif;
-    font-size: 15px; font-weight: 500;
-    color: var(--ink-mid);
-  }
+  .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .section-icon { width: 32px; height: 32px; background: var(--t-accent-pale); border: 1px solid var(--t-accent-border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; transition: background 0.35s, border-color 0.35s; }
+  .section-title { font-family: 'Lora', serif; font-size: 15px; font-weight: 500; color: var(--ink-mid); }
   .section-sub { font-size: 11px; color: var(--ink-ghost); margin-top: 1px; }
 
-  /* ── CARD ── */
-  .card {
-    background: var(--warm-white);
-    border: 1px solid var(--stone-pale);
-    border-radius: var(--r-xl);
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow 0.2s;
-  }
+  .card { background: var(--warm-white); border: 1px solid var(--stone-pale); border-radius: var(--r-xl); padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm); transition: box-shadow 0.2s; }
   .card:hover { box-shadow: var(--shadow); }
 
-  /* ── INPUT GRID ── */
   .input-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 1rem; }
-
   .field { display: flex; flex-direction: column; gap: 5px; }
   .field label { font-size: 11px; font-weight: 600; color: var(--ink-soft); letter-spacing: 0.03em; }
   .field-hint { font-size: 10px; color: var(--ink-ghost); }
 
   .input-wrap { position: relative; }
-  .pfx, .sfx {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    font-size: 13px; color: var(--ink-ghost); pointer-events: none;
-  }
+  .pfx, .sfx { position: absolute; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--ink-ghost); pointer-events: none; }
   .pfx { left: 11px; }
   .sfx { right: 11px; }
 
-  input[type="number"] {
-    width: 100%;
-    background: var(--cream);
-    border: 1.5px solid var(--ink-mist);
-    border-radius: var(--r);
-    color: var(--ink);
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px; font-weight: 500;
-    padding: 9px 12px;
-    outline: none;
-    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
-    -moz-appearance: textfield;
-  }
+  input[type="number"] { width: 100%; background: var(--cream); border: 1.5px solid var(--ink-mist); border-radius: var(--r); color: var(--ink); font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 500; padding: 9px 12px; outline: none; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; -moz-appearance: textfield; }
   input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-  input[type="number"]:focus {
-    border-color: var(--sage-mid);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(74,124,89,0.12);
-  }
+  input[type="number"]:focus { border-color: var(--t-accent); background: #fff; box-shadow: 0 0 0 3px var(--t-focus); }
   .has-pfx input { padding-left: 24px; }
   .has-sfx input { padding-right: 28px; }
 
-  /* ── DIVIDER ── */
-  .divider {
-    display: flex; align-items: center; gap: 12px;
-    margin: 0.75rem 0 1.25rem;
-  }
-  .divider-line { flex:1; height:1px; background: var(--stone-pale); }
-  .divider-text {
-    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-ghost); font-weight: 600;
-  }
+  input.is-auto   { border-color: var(--sage-pale) !important; background: #f4fbf6 !important; color: var(--sage) !important; font-style: italic; }
+  input.is-manual { border-color: var(--gold) !important; background: #fffbf0 !important; font-style: normal; }
 
-  /* ── WATERFALL ── */
-  .waterfall {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-    gap: 8px; margin-bottom: 1.25rem;
-  }
-  .wf {
-    background: var(--warm-white);
-    border: 1px solid var(--stone-pale);
-    border-radius: var(--r-lg);
-    padding: 12px 14px;
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow 0.15s, transform 0.15s;
-  }
+  .divider { display: flex; align-items: center; gap: 12px; margin: 0.75rem 0 1.25rem; }
+  .divider-line { flex: 1; height: 1px; background: var(--stone-pale); }
+  .divider-text { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); font-weight: 600; }
+
+  .waterfall { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 8px; margin-bottom: 1.25rem; }
+  .wf { background: var(--warm-white); border: 1px solid var(--stone-pale); border-radius: var(--r-lg); padding: 12px 14px; box-shadow: var(--shadow-sm); transition: box-shadow 0.15s, transform 0.15s; }
   .wf:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
-  .wf-l {
-    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-ghost); margin-bottom: 4px; font-weight: 600;
-  }
+  .wf-l { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 4px; font-weight: 600; }
   .wf-v { font-family: 'Lora', serif; font-size: 16px; font-weight: 500; color: var(--ink); }
-  .wf-v.pos { color: var(--sage); }
+  .wf-v.pos { color: var(--t-accent); }
   .wf-v.neg { color: var(--terracotta); }
   .wf-v.hi  { color: var(--sky); }
   .wf-v.amb { color: var(--gold); }
 
   /* ── RESULT BANNER ── */
-  .result-banner {
-    border-radius: var(--r-xl);
-    padding: 1.5rem 1.75rem;
-    margin-bottom: 1.25rem;
-    position: relative; overflow: hidden;
-  }
-  .result-banner.sweet {
-    background: linear-gradient(135deg, var(--sage-wash) 0%, #dff0e6 100%);
-    border: 1.5px solid var(--sage-pale);
-  }
-  .result-banner.sweet::after {
-    content: '🏡';
-    position: absolute; right: 1.75rem; top: 50%; transform: translateY(-50%);
-    font-size: 3.5rem; opacity: 0.18; line-height: 1;
-  }
-  .result-banner.upsize {
-    background: linear-gradient(135deg, var(--sky-pale) 0%, #d8ecf5 100%);
-    border: 1.5px solid #b0d4e8;
-  }
-  .result-banner.upsize::after {
-    content: '🔑';
-    position: absolute; right: 1.75rem; top: 50%; transform: translateY(-50%);
-    font-size: 3.5rem; opacity: 0.18; line-height: 1;
-  }
-  .result-banner.none {
-    background: var(--stone-wash);
-    border: 1.5px solid var(--stone-pale);
-  }
+  .result-banner { border-radius: var(--r-xl); padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; position: relative; overflow: hidden; }
+  .result-banner.sweet { background: linear-gradient(135deg, var(--t-sweet1) 0%, var(--t-sweet2) 100%); border: 1.5px solid var(--t-sweet-bd); }
+  .result-banner.sweet::after { content: '🏡'; position: absolute; right: 1.75rem; top: 50%; transform: translateY(-50%); font-size: 3.5rem; opacity: 0.15; line-height: 1; }
+  .result-banner.upsize { background: linear-gradient(135deg, #ddeef8 0%, #c0e0f5 100%); border: 1.5px solid #90c8e8; }
+  .result-banner.upsize::after { content: '🔑'; position: absolute; right: 1.75rem; top: 50%; transform: translateY(-50%); font-size: 3.5rem; opacity: 0.15; line-height: 1; }
+  .result-banner.none { background: var(--stone-wash); border: 1.5px solid var(--stone-pale); }
   .result-banner.none::after { content: ''; }
-  .banner-eyebrow {
-    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--sage); font-weight: 700; margin-bottom: 6px;
-  }
-  .result-banner.upsize .banner-eyebrow { color: var(--sky); }
+  .banner-eyebrow { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--t-accent); font-weight: 700; margin-bottom: 6px; }
   .result-banner.none .banner-eyebrow { color: var(--ink-ghost); }
-  .banner-head {
-    font-family: 'Lora', serif;
-    font-size: clamp(1.2rem, 3vw, 1.65rem);
-    font-weight: 600; color: var(--ink);
-    margin-bottom: 6px; line-height: 1.2;
-  }
-  .banner-head span { color: var(--sage); }
-  .result-banner.upsize .banner-head span { color: var(--sky); }
-  .banner-sub {
-    font-size: 13px; color: var(--ink-mid);
-    font-weight: 400; line-height: 1.7; max-width: 580px;
-  }
-  .banner-sub strong { color: var(--sage); font-weight: 700; }
-  .result-banner.upsize .banner-sub strong { color: var(--sky); }
+  .banner-head { font-family: 'Lora', serif; font-size: clamp(1.2rem, 3vw, 1.65rem); font-weight: 600; color: var(--ink); margin-bottom: 8px; line-height: 1.2; }
+  .banner-head .hl { color: var(--t-accent); }
+  .banner-sub { font-size: 13px; color: var(--ink-soft); font-weight: 400; line-height: 1.7; max-width: 620px; }
 
-  /* repayment comparison strip */
-  .repay-compare {
-    display: flex; align-items: center; gap: 10px;
-    margin-top: 1rem; flex-wrap: wrap;
-  }
-  .repay-box {
-    background: rgba(255,255,255,0.6);
-    border: 1px solid rgba(0,0,0,0.07);
-    border-radius: var(--r-lg);
-    padding: 10px 16px;
-    min-width: 130px;
-  }
-  .result-banner.upsize .repay-box { background: rgba(255,255,255,0.55); }
-  .repay-box-label {
-    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-ghost); font-weight: 700; margin-bottom: 3px;
-  }
-  .repay-box-val {
-    font-family: 'Lora', serif;
-    font-size: 1.35rem; font-weight: 600; color: var(--ink);
-    line-height: 1.1;
-  }
-  .repay-box-val.new-val { color: var(--sage); }
-  .result-banner.upsize .repay-box-val.new-val { color: var(--sky); }
-  .repay-box-sub {
-    font-size: 10px; color: var(--ink-ghost); margin-top: 2px;
-  }
-  .repay-arrow {
-    font-size: 1.4rem; color: var(--ink-mist); flex-shrink: 0;
-  }
-  .repay-delta {
-    background: rgba(255,255,255,0.6);
-    border: 1px solid rgba(0,0,0,0.07);
-    border-radius: var(--r-lg);
-    padding: 10px 16px; min-width: 130px;
-  }
-  .repay-delta-label {
-    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-ghost); font-weight: 700; margin-bottom: 3px;
-  }
-  .repay-delta-val {
-    font-family: 'Lora', serif;
-    font-size: 1.35rem; font-weight: 600; line-height: 1.1;
-  }
-  .repay-delta-val.save { color: var(--green-pill); }
-  .repay-delta-val.extra { color: var(--terracotta); }
-  .repay-delta-sub { font-size: 10px; color: var(--ink-ghost); margin-top: 2px; }
+  /* repayment comparison */
+  .repay-compare { display: flex; align-items: stretch; gap: 8px; margin: 0.7rem 0; flex-wrap: wrap; }
+  .rc { background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.07); border-radius: var(--r-lg); padding: 10px 14px; min-width: 110px; }
+  .rc-l { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); font-weight: 700; margin-bottom: 3px; }
+  .rc-est { color: var(--sage); font-size: 8px; margin-left: 3px; }
+  .rc-v { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .rc-v .unit { font-size: 0.65em; color: var(--ink-ghost); font-weight: 400; }
+  .rc-v.new  { color: var(--t-accent); }
+  .rc-v.save { color: var(--green-pill); }
+  .rc-v.cost { color: var(--terracotta); }
+  .rc-s { font-size: 10px; color: var(--ink-ghost); margin-top: 2px; }
+  .rc-arrow { align-self: center; font-size: 1.1rem; color: var(--ink-mist); flex-shrink: 0; }
+
+  /* affordability */
+  .afford-strip { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 0.6rem; }
+  .af { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid; }
+  .af-good  { background: var(--green-bg); border-color: #a8d5bc; color: var(--green-pill); }
+  .af-ok    { background: var(--amber-bg); border-color: #e0c070; color: var(--amber-pill); }
+  .af-tight { background: var(--rose-bg);  border-color: #e0a0a0; color: var(--rose-pill); }
+  .af-none  { background: var(--stone-wash); border-color: var(--stone-pale); color: var(--ink-ghost); }
+  .af-spare-pos { background: var(--green-bg); border-color: #a8d5bc; color: var(--green-pill); }
+  .af-spare-neg { background: var(--rose-bg);  border-color: #e0a0a0; color: var(--rose-pill); }
 
   /* ── TABLE ── */
-  .tbl-wrap {
-    border-radius: var(--r-xl);
-    border: 1px solid var(--stone-pale);
-    overflow: hidden; overflow-x: auto;
-    box-shadow: var(--shadow-sm);
-  }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  thead { background: linear-gradient(135deg, var(--sage) 0%, var(--sage-mid) 100%); }
-  th {
-    padding: 11px 14px;
-    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: rgba(255,255,255,0.95); font-weight: 700;
-    text-align: right; white-space: nowrap;
-  }
+  .tbl-wrap { border-radius: var(--r-xl); border: 1px solid var(--stone-pale); overflow: hidden; overflow-x: auto; box-shadow: var(--shadow-sm); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead { background: linear-gradient(135deg, var(--t-th1) 0%, var(--t-th2) 100%); transition: background 0.4s ease; }
+  th { padding: 11px 14px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.92); font-weight: 700; text-align: right; white-space: nowrap; }
   th:first-child { text-align: left; }
-
-  td {
-    padding: 11px 14px;
-    border-bottom: 1px solid var(--cream2);
-    text-align: right; white-space: nowrap;
-    color: var(--ink-mid);
-    background: var(--warm-white);
-    transition: background 0.1s;
-  }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--cream2); text-align: right; white-space: nowrap; color: var(--ink-mid); background: var(--warm-white); transition: background 0.1s; font-weight: 500; }
   td:first-child { text-align: left; color: var(--ink); font-weight: 600; }
   tr:last-child td { border-bottom: none; }
   tbody tr:nth-child(even):not(.row-free):not(.row-sweet):not(.row-upsweet):not(.row-over) td { background: #faf7f4; }
   tr:not(.row-free):not(.row-sweet):not(.row-upsweet):not(.row-over):hover td { background: var(--cream); }
+  tr.row-free    td { background: #edfaf3; color: var(--ink-mid); }
+  tr.row-free    td:first-child { color: var(--green-pill); }
+  tr.row-sweet   td { background: var(--t-sweet1); color: var(--ink); }
+  tr.row-sweet   td:first-child { color: var(--t-accent); }
+  tr.row-upsweet td { background: #ddeef8; color: var(--ink); }
+  tr.row-upsweet td:first-child { color: #1e6fa8; }
+  tr.row-over    td { color: #9e918a; }
+  tr.row-over    td:first-child { color: #9e918a; }
 
-  tr.row-free td { background: #edfaf3; color: var(--ink-mid); }
-  tr.row-free td:first-child { color: var(--green-pill); }
-  tr.row-sweet td { background: var(--sage-wash); color: var(--ink); }
-  tr.row-sweet td:first-child { color: var(--sage); }
-  tr.row-upsweet td { background: var(--sky-pale); color: var(--ink); }
-  tr.row-upsweet td:first-child { color: var(--sky); }
-  tr.row-over td { color: #9e918a; }
-  tr.row-over td:first-child { color: #9e918a; }
-
-  .saving-pos { color: var(--sage) !important; font-weight: 700; }
+  .saving-pos { color: var(--t-accent) !important; font-weight: 700; }
   .saving-neg { color: var(--terracotta) !important; font-weight: 700; }
   .repay-over { color: var(--terracotta) !important; }
 
+  /* income table cols — hidden until income entered */
+  .income-col { display: none; }
+  .show-income .income-col { display: table-cell; }
+  .pct-good  { color: var(--green-pill) !important; font-weight: 700 !important; }
+  .pct-ok    { color: var(--amber-pill) !important; font-weight: 700 !important; }
+  .pct-tight { color: var(--terracotta) !important; font-weight: 700 !important; }
+  .sp-pos { color: var(--green-pill) !important; font-weight: 600 !important; }
+  .sp-neg { color: var(--terracotta) !important; font-weight: 600 !important; }
+
   /* ── BADGES ── */
-  .badge {
-    display: inline-flex; align-items: center; gap: 3px;
-    font-size: 9px; padding: 2px 8px; border-radius: 20px;
-    letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700;
-  }
-  .b-free   { background: var(--green-bg);  color: var(--green-pill); }
-  .b-sweet  { background: var(--sage-wash); color: var(--sage); border: 1px solid var(--sage-pale); }
-  .b-up     { background: var(--sky-pale);  color: var(--sky); border: 1px solid #b0d4e8; }
-  .b-ok     { background: var(--amber-bg);  color: var(--amber-pill); }
-  .b-over   { background: var(--cream2);    color: var(--ink-ghost); }
+  .badge { display: inline-flex; align-items: center; gap: 3px; font-size: 9px; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; }
+  .b-free  { background: var(--green-bg);  color: var(--green-pill); }
+  .b-sweet { background: var(--t-sweet1);  color: var(--t-accent);  border: 1px solid var(--t-sweet-bd); }
+  .b-up    { background: #ddeef8;           color: #1e6fa8;          border: 1px solid #90c8e8; }
+  .b-ok    { background: var(--amber-bg);  color: var(--amber-pill); }
+  .b-over  { background: var(--cream2);    color: var(--ink-ghost); }
 
   /* ── MODE NOTICE ── */
-  .mode-notice {
-    display: flex; align-items: center; gap: 10px;
-    background: var(--sky-pale);
-    border: 1px solid #b0d4e8;
-    border-radius: var(--r-lg);
-    padding: 10px 16px;
-    font-size: 12px; color: var(--sky);
-    margin-bottom: 1.25rem;
-    font-weight: 500;
-  }
-  .mode-notice.down {
-    background: var(--sage-wash);
-    border-color: var(--sage-pale);
-    color: var(--sage);
-  }
-  .mode-notice.hidden { display: none; }
+  .mode-notice { display: flex; align-items: center; gap: 10px; background: var(--sky-pale); border: 1px solid #b0d4e8; border-radius: var(--r-lg); padding: 10px 16px; font-size: 12px; color: var(--sky); margin-bottom: 1.25rem; font-weight: 500; }
+  .mode-notice.down { background: var(--sage-wash); border-color: var(--sage-pale); color: var(--sage); }
 
   /* ── FOOTER ── */
-  .footer {
-    margin-top: 2rem; padding: 1.25rem 1.5rem;
-    background: var(--stone-wash);
-    border: 1px solid var(--stone-pale);
-    border-radius: var(--r-xl);
-    font-size: 11px; color: var(--ink-ghost); line-height: 1.8;
-  }
+  .footer { margin-top: 2rem; padding: 1.25rem 1.5rem; background: var(--stone-wash); border: 1px solid var(--stone-pale); border-radius: var(--r-xl); font-size: 11px; color: var(--ink-ghost); line-height: 1.8; }
   .footer strong { color: var(--ink-soft); }
 
   /* ── ANIMATIONS ── */
-  .card, .result-banner, .tbl-wrap {
-    animation: riseIn 0.35s ease both;
-  }
+  .card, .result-banner, .tbl-wrap { animation: riseIn 0.35s ease both; }
   .card:nth-child(2) { animation-delay: 0.05s; }
   .card:nth-child(3) { animation-delay: 0.10s; }
   .card:nth-child(4) { animation-delay: 0.15s; }
-  @keyframes riseIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  .card:nth-child(5) { animation-delay: 0.20s; }
+  .card:nth-child(6) { animation-delay: 0.25s; }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ── RESPONSIVE ── */
   @media(max-width:640px) {
     .page { padding: 1rem; }
     .header-inner { padding: 1.75rem 1rem 1.5rem; }
     .waterfall { grid-template-columns: 1fr 1fr; }
     .input-grid { grid-template-columns: 1fr 1fr; }
     .hstat { min-width: 100px; }
-    .result-banner.sweet::after,
-    .result-banner.upsize::after { display: none; }
+    .result-banner.sweet::after, .result-banner.upsize::after { display: none; }
+    .repay-compare { flex-direction: column; }
   }
   @media(max-width:400px) {
     .input-grid { grid-template-columns: 1fr; }
@@ -488,13 +271,12 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="header">
   <div class="header-leaves" aria-hidden="true">
-    <span class="leaf">🌿</span>
-    <span class="leaf">🍃</span>
-    <span class="leaf">🌱</span>
-    <span class="leaf">🌳</span>
+    <span class="leaf" id="leaf1">🌿</span>
+    <span class="leaf" id="leaf2">🍃</span>
+    <span class="leaf" id="leaf3">🌱</span>
+    <span class="leaf" id="leaf4">🌳</span>
   </div>
   <div class="header-inner">
     <div class="header-eyebrow">
@@ -503,36 +285,21 @@
     </div>
     <h1>Equity Calculator <em>Pro</em></h1>
     <p class="header-sub">Plan your next move with confidence — whether you're downsizing for a simpler life or upsizing for your growing family.</p>
-
     <div class="mode-toggle">
       <button class="mode-btn active" id="btnDown" onclick="setMode('down')">⬇ Downsize</button>
-      <button class="mode-btn" id="btnUp" onclick="setMode('up')">⬆ Upsize</button>
+      <button class="mode-btn" id="btnUp"   onclick="setMode('up')">⬆ Upsize</button>
     </div>
-
     <div class="header-stats">
-      <div class="hstat">
-        <p class="hstat-l">Net sale proceeds</p>
-        <p class="hstat-v" id="hNetSale">—</p>
-      </div>
-      <div class="hstat">
-        <p class="hstat-l">Funds available</p>
-        <p class="hstat-v" id="hFunds">—</p>
-      </div>
-      <div class="hstat">
-        <p class="hstat-l">Sweet spot repayment</p>
-        <p class="hstat-v" id="hRepay">—</p>
-      </div>
-      <div class="hstat">
-        <p class="hstat-l">Sweet spot saving</p>
-        <p class="hstat-v" id="hSaving">—</p>
-      </div>
+      <div class="hstat"><p class="hstat-l">Net sale proceeds</p><p class="hstat-v" id="hNetSale">—</p></div>
+      <div class="hstat"><p class="hstat-l">Funds available</p><p class="hstat-v" id="hFunds">—</p></div>
+      <div class="hstat"><p class="hstat-l">Sweet spot repayment</p><p class="hstat-v" id="hRepay">—</p></div>
+      <div class="hstat"><p class="hstat-l">Sweet spot saving</p><p class="hstat-v" id="hSaving">—</p></div>
     </div>
   </div>
 </header>
 
 <div class="page">
 
-  <!-- MODE NOTICE -->
   <div class="mode-notice down" id="modeNotice">
     ⬇ Downsize mode — the table shows repayment <strong>reductions</strong> as you move to a lower-value home.
   </div>
@@ -541,24 +308,19 @@
   <div class="card">
     <div class="section-head">
       <div class="section-icon">🏠</div>
-      <div>
-        <p class="section-title">Your current property</p>
-        <p class="section-sub">What you're selling and what you owe</p>
-      </div>
+      <div><p class="section-title">Your current property</p><p class="section-sub">What you're selling and what you owe</p></div>
     </div>
     <div class="input-grid">
       <div class="field">
         <label>Estimated sale price</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
           <input type="number" id="salePrice" value="1000000" step="25000" oninput="calc()">
         </div>
       </div>
       <div class="field">
         <label>Mortgage owing</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
-          <input type="number" id="mortgage" value="500000" step="10000" oninput="calc()">
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
+          <input type="number" id="mortgage" value="500000" step="10000" oninput="onMortgageOrRateChange()">
         </div>
       </div>
       <div class="field">
@@ -570,43 +332,36 @@
       </div>
       <div class="field">
         <label>Legal &amp; moving costs</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
           <input type="number" id="miscCosts" value="5000" step="1000" oninput="calc()">
         </div>
       </div>
     </div>
   </div>
 
-  <!-- CASH -->
+  <!-- SAVINGS -->
   <div class="card">
     <div class="section-head">
       <div class="section-icon">💰</div>
-      <div>
-        <p class="section-title">Savings &amp; offset account</p>
-        <p class="section-sub">Cash you'll bring to the new purchase</p>
-      </div>
+      <div><p class="section-title">Savings &amp; offset account</p><p class="section-sub">Cash you'll bring to the new purchase</p></div>
     </div>
     <div class="input-grid">
       <div class="field">
         <label>Total offset / savings</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
           <input type="number" id="offsetTotal" value="0" step="10000" oninput="calc()">
         </div>
       </div>
       <div class="field">
         <label>Cash buffer to keep</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
           <input type="number" id="buffer" value="0" step="10000" oninput="calc()">
         </div>
         <p class="field-hint">Held back — not deployed into purchase</p>
       </div>
       <div class="field">
         <label>Renovation budget</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
           <input type="number" id="reno" value="0" step="10000" oninput="calc()">
         </div>
         <p class="field-hint">Cash-funded, not added to loan</p>
@@ -614,45 +369,64 @@
     </div>
   </div>
 
-  <!-- LOAN SETTINGS -->
+  <!-- LOAN -->
   <div class="card">
     <div class="section-head">
       <div class="section-icon">📋</div>
-      <div>
-        <p class="section-title">Loan settings</p>
-        <p class="section-sub">Your new mortgage details</p>
-      </div>
+      <div><p class="section-title">Loan settings</p><p class="section-sub">Your new mortgage details</p></div>
     </div>
     <div class="input-grid">
       <div class="field">
         <label>Interest rate</label>
         <div class="input-wrap has-sfx">
-          <input type="number" id="rate" value="5.63" step="0.05" min="1" max="15" oninput="calc()">
+          <input type="number" id="rate" value="5.63" step="0.05" min="1" max="15" oninput="onMortgageOrRateChange()">
           <span class="sfx">%</span>
         </div>
       </div>
       <div class="field">
         <label>Loan term</label>
         <div class="input-wrap has-sfx">
-          <input type="number" id="loanYears" value="30" step="1" min="5" max="30" oninput="calc()">
+          <input type="number" id="loanYears" value="30" step="1" min="5" max="30" oninput="onMortgageOrRateChange()">
           <span class="sfx">yrs</span>
         </div>
       </div>
       <div class="field">
         <label>Current repayment / mo</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
-          <input type="number" id="currentRepay" value="" step="100" placeholder="Auto" oninput="onRepayInput()" style="transition: background 0.2s;">
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
+          <input type="number" id="currentRepay" step="100" placeholder="Auto" oninput="onRepayChange()">
         </div>
-        <p class="field-hint" id="currentRepayHint" style="color:var(--sage);">Estimated from mortgage &amp; rate</p>
+        <p class="field-hint" id="repayHint" style="color:var(--sage);">Auto-estimated from mortgage &amp; rate — type to override</p>
       </div>
       <div class="field">
         <label>Repayment target / mo</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
           <input type="number" id="targetRepay" value="6000" step="500" oninput="calc()">
         </div>
         <p class="field-hint">Highlights your goal repayment range</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INCOME -->
+  <div class="card">
+    <div class="section-head">
+      <div class="section-icon">👨‍👩‍👧</div>
+      <div><p class="section-title">Household income &amp; expenses</p><p class="section-sub">Optional — unlocks affordability % and spare cash in results</p></div>
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label>Combined net monthly income</label>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
+          <input type="number" id="netIncome" value="" step="500" placeholder="e.g. 12000" oninput="calc()">
+        </div>
+        <p class="field-hint">Total take-home pay after tax</p>
+      </div>
+      <div class="field">
+        <label>Est. monthly expenses</label>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
+          <input type="number" id="monthlyExp" value="" step="250" placeholder="e.g. 4000" oninput="calc()">
+        </div>
+        <p class="field-hint">Living costs excluding mortgage</p>
       </div>
     </div>
   </div>
@@ -661,51 +435,36 @@
   <div class="card">
     <div class="section-head">
       <div class="section-icon">🔍</div>
-      <div>
-        <p class="section-title">Purchase price range</p>
-        <p class="section-sub">The range of properties you're considering</p>
-      </div>
+      <div><p class="section-title">Purchase price range</p><p class="section-sub">The range of properties you're considering</p></div>
     </div>
     <div class="input-grid">
       <div class="field">
         <label>Minimum price</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
           <input type="number" id="priceMin" value="1500000" step="50000" oninput="calc()">
         </div>
       </div>
       <div class="field">
         <label>Maximum price</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
           <input type="number" id="priceMax" value="2500000" step="50000" oninput="calc()">
         </div>
       </div>
       <div class="field">
         <label>Price step / interval</label>
-        <div class="input-wrap has-pfx">
-          <span class="pfx">$</span>
+        <div class="input-wrap has-pfx"><span class="pfx">$</span>
           <input type="number" id="priceStep" value="100000" step="10000" min="10000" oninput="calc()">
         </div>
       </div>
     </div>
   </div>
 
-  <!-- RESULTS DIVIDER -->
-  <div class="divider">
-    <div class="divider-line"></div>
-    <span class="divider-text">Your results</span>
-    <div class="divider-line"></div>
-  </div>
+  <div class="divider"><div class="divider-line"></div><span class="divider-text">Your results</span><div class="divider-line"></div></div>
 
-  <!-- WATERFALL -->
   <div class="waterfall" id="waterfall"></div>
-
-  <!-- RESULT BANNER -->
   <div id="resultBanner"></div>
 
-  <!-- TABLE -->
-  <div class="tbl-wrap">
+  <div class="tbl-wrap" id="tblWrap">
     <table>
       <thead>
         <tr>
@@ -716,6 +475,8 @@
           <th>Repayment / mo</th>
           <th id="thSaving">Monthly saving</th>
           <th id="thAnnual">Annual saving</th>
+          <th class="income-col">% of income</th>
+          <th class="income-col">Spare / mo</th>
           <th>LVR</th>
           <th></th>
         </tr>
@@ -725,43 +486,92 @@
   </div>
 
   <div class="footer">
-    <strong>Important:</strong> NSW stamp duty is calculated on owner-occupier rates for established homes. Repayments are principal &amp; interest over the full loan term. Offset cash minus buffer is fully deployed as deposit. Renovation budget is cash-funded and not added to the loan. Agent commission and legal/moving costs are deducted from sale proceeds. The "saving" column compares new repayment to your current repayment — enter $0 if you don't have one. This tool is for indicative modelling only and is <strong>not financial advice</strong>. Always speak with a licensed mortgage broker and financial adviser before making property decisions.
+    <strong>Created by Mikel.</strong> NSW stamp duty calculated on owner-occupier rates for established homes. Repayments are principal &amp; interest over the full loan term. Offset cash minus buffer is fully deployed as deposit. Renovation budget is cash-funded and not added to the loan. Agent commission and legal/moving costs are deducted from sale proceeds. Affordability guide: ≤28% of income = comfortable, 28–35% = manageable, &gt;35% = stretched. This tool is for indicative modelling only and is <strong>not financial advice</strong>. Always speak with a licensed mortgage broker and financial adviser before making property decisions.
   </div>
 
 </div>
 
 <script>
-  let mode = 'down'; // 'down' or 'up'
-  let repayManuallySet = false; // tracks whether user has overridden the auto-estimate
+  let mode = 'down';
+  let repayManual = false;
 
-  function onRepayInput() {
-    const field = document.getElementById('currentRepay');
-    const hint  = document.getElementById('currentRepayHint');
-    if (field.value === '' || field.value === null) {
-      repayManuallySet = false;
-      field.style.background = '';
+  /* ── HELPERS ── */
+  function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+  function fmtAUD(n) {
+    if (isNaN(n) || n === null) return '—';
+    const s = '$' + Math.abs(Math.round(n)).toLocaleString('en-AU');
+    return n < 0 ? '−' + s : s;
+  }
+  function fmtPct(n) { return isNaN(n) ? '—' : n.toFixed(1) + '%'; }
+
+  function sdNSW(p) {
+    if (p <= 0) return 0;
+    if (p <= 16000)   return p * 0.0125;
+    if (p <= 35000)   return 200   + (p-16000)*0.015;
+    if (p <= 87000)   return 485   + (p-35000)*0.0175;
+    if (p <= 327000)  return 1395  + (p-87000)*0.035;
+    if (p <= 1089000) return 9795  + (p-327000)*0.045;
+    if (p <= 3268000) return 44095 + (p-1089000)*0.055;
+    return 163940 + (p-3268000)*0.07;
+  }
+
+  function rpay(loan, rate, years) {
+    if (loan <= 0 || rate <= 0) return 0;
+    const r = rate/12, n = years*12;
+    return loan * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  }
+
+  /* ── AUTO-ESTIMATE REPAYMENT ── */
+  function autoEstimate() {
+    return rpay(v('mortgage'), v('rate')/100, v('loanYears'));
+  }
+
+  function syncRepayField() {
+    const el   = document.getElementById('currentRepay');
+    const hint = document.getElementById('repayHint');
+    if (!repayManual) {
+      const est = autoEstimate();
+      el.value = est > 0 ? Math.round(est) : '';
+      el.classList.add('is-auto');
+      el.classList.remove('is-manual');
       hint.style.color = 'var(--sage)';
-      hint.textContent = 'Estimated from mortgage & rate';
+      hint.textContent = 'Auto-estimated from mortgage & rate — type to override';
     } else {
-      repayManuallySet = true;
-      field.style.background = '#fffef8';
-      hint.style.color = 'var(--ink-ghost)';
-      hint.textContent = 'Manually entered — clear to auto-estimate';
+      el.classList.remove('is-auto');
+      el.classList.add('is-manual');
+      hint.style.color = 'var(--gold)';
+      hint.textContent = 'Manually entered — clear field to revert to auto-estimate';
     }
+  }
+
+  function onRepayChange() {
+    const el = document.getElementById('currentRepay');
+    repayManual = el.value.trim() !== '';
+    syncRepayField();
     calc();
   }
 
-  function estimateRepay(mortgage, rateAnn, years) {
-    if (mortgage <= 0) return 0;
-    const r = rateAnn / 12, n = years * 12;
-    if (r === 0) return mortgage / n;
-    return mortgage * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  function onMortgageOrRateChange() {
+    if (!repayManual) syncRepayField();
+    calc();
   }
 
+  /* ── MODE TOGGLE ── */
   function setMode(m) {
     mode = m;
-    document.getElementById('btnDown').className = 'mode-btn' + (m === 'down' ? ' active' : '');
-    document.getElementById('btnUp').className   = 'mode-btn' + (m === 'up'   ? ' active' : '');
+    document.getElementById('btnDown').className = 'mode-btn' + (m==='down' ? ' active' : '');
+    document.getElementById('btnUp').className   = 'mode-btn' + (m==='up'   ? ' active' : '');
+
+    // Recolour whole app
+    document.body.classList.toggle('up', m === 'up');
+
+    // Swap decorative icons
+    const icons = m === 'up' ? ['🏙','🏘','🔑','🏗'] : ['🌿','🍃','🌱','🌳'];
+    ['leaf1','leaf2','leaf3','leaf4'].forEach((id,i) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = icons[i];
+    });
+
     const notice = document.getElementById('modeNotice');
     if (m === 'down') {
       notice.className = 'mode-notice down';
@@ -777,65 +587,46 @@
     calc();
   }
 
-  function sdNSW(p) {
-    if (p <= 0)        return 0;
-    if (p <= 16000)    return p * 0.0125;
-    if (p <= 35000)    return 200   + (p - 16000)  * 0.015;
-    if (p <= 87000)    return 485   + (p - 35000)  * 0.0175;
-    if (p <= 327000)   return 1395  + (p - 87000)  * 0.035;
-    if (p <= 1089000)  return 9795  + (p - 327000) * 0.045;
-    if (p <= 3268000)  return 44095 + (p - 1089000)* 0.055;
-    return 163940 + (p - 3268000) * 0.07;
-  }
-
-  function rpay(loan, rate, years) {
-    if (loan <= 0) return 0;
-    const r = rate / 12, n = years * 12;
-    return loan * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
-  }
-
-  function fmtAUD(n, showSign=false) {
-    if (isNaN(n) || n === null) return '—';
-    const abs = Math.abs(Math.round(n));
-    const str = '$' + abs.toLocaleString('en-AU');
-    if (showSign && n > 0) return '+' + str;
-    if (n < 0) return '−' + str;
-    return str;
-  }
-
-  function fmtPct(n) { return isNaN(n) ? '—' : n.toFixed(1) + '%'; }
-  function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
-
+  /* ── MAIN CALC ── */
   function calc() {
-    const sale       = v('salePrice');
-    const mortgage   = v('mortgage');
-    const agentPct   = v('agentPct');
-    const misc       = v('miscCosts');
-    const offsetTot  = v('offsetTotal');
-    const buffer     = v('buffer');
-    const reno       = v('reno');
-    const rateAnn    = v('rate') / 100;
-    const years      = v('loanYears');
+    const sale     = v('salePrice');
+    const mortgage = v('mortgage');
+    const agentPct = v('agentPct');
+    const misc     = v('miscCosts');
+    const offset   = v('offsetTotal');
+    const buffer   = v('buffer');
+    const reno     = v('reno');
+    const rateAnn  = v('rate') / 100;
+    const years    = v('loanYears');
+    const target   = v('targetRepay');
+    const pMin     = v('priceMin');
+    const pMax     = v('priceMax');
+    const pStep    = Math.max(v('priceStep'), 1000);
+    const income   = v('netIncome');
+    const expenses = v('monthlyExp');
+    const hasIncome = income > 0;
 
-    // Current repayment: use manual entry if set, otherwise estimate from mortgage
-    const manualRepay = parseFloat(document.getElementById('currentRepay').value);
-    const autoRepay   = estimateRepay(mortgage, rateAnn, years);
-    const currRepay   = (repayManuallySet && !isNaN(manualRepay) && manualRepay > 0) ? manualRepay : autoRepay;
-
-    // Sync the field placeholder to show the estimate when not manually set
-    const repayField = document.getElementById('currentRepay');
-    if (!repayManuallySet) {
-      repayField.placeholder = autoRepay > 0 ? Math.round(autoRepay).toLocaleString('en-AU') : 'Auto';
-    }
-    const target     = v('targetRepay');
-    const pMin       = v('priceMin');
-    const pMax       = v('priceMax');
-    const pStep      = Math.max(v('priceStep'), 1000);
+    const currRepay = repayManual ? v('currentRepay') : autoEstimate();
 
     const agentCost    = sale * agentPct / 100;
     const netSale      = sale - mortgage - agentCost - misc;
-    const offsetDeploy = Math.max(0, offsetTot - buffer);
+    const offsetDeploy = Math.max(0, offset - buffer);
     const funds        = netSale + offsetDeploy - reno;
+
+    // Income helpers
+    function pct(r)  { return hasIncome && r > 0 ? r / income * 100 : null; }
+    function sp(r)   { return hasIncome ? income - expenses - r : null; }
+    function pctCls(p) { if (p===null) return ''; if (p<=28) return 'pct-good'; if (p<=35) return 'pct-ok'; return 'pct-tight'; }
+    function afCls(p)  { if (p===null) return 'af-none'; if (p<=28) return 'af-good'; if (p<=35) return 'af-ok'; return 'af-tight'; }
+    function afTxt(p)  {
+      if (p===null) return 'Enter income above to see affordability';
+      if (p<=28) return p.toFixed(1)+'% of income — comfortable';
+      if (p<=35) return p.toFixed(1)+'% of income — manageable';
+      return p.toFixed(1)+'% of income — stretched';
+    }
+
+    // Show/hide income columns
+    document.getElementById('tblWrap').classList.toggle('show-income', hasIncome);
 
     // Header
     document.getElementById('hNetSale').textContent = fmtAUD(netSale);
@@ -845,7 +636,7 @@
     document.getElementById('waterfall').innerHTML = `
       <div class="wf"><p class="wf-l">Sale price</p><p class="wf-v">${fmtAUD(sale)}</p></div>
       <div class="wf"><p class="wf-l">Less mortgage</p><p class="wf-v neg">−${fmtAUD(mortgage)}</p></div>
-      <div class="wf"><p class="wf-l">Agent + costs</p><p class="wf-v neg">−${fmtAUD(agentCost + misc)}</p></div>
+      <div class="wf"><p class="wf-l">Agent + costs</p><p class="wf-v neg">−${fmtAUD(agentCost+misc)}</p></div>
       <div class="wf"><p class="wf-l">Net proceeds</p><p class="wf-v">${fmtAUD(netSale)}</p></div>
       <div class="wf"><p class="wf-l">Offset deployed</p><p class="wf-v pos">+${fmtAUD(offsetDeploy)}</p></div>
       <div class="wf"><p class="wf-l">Reno budget</p><p class="wf-v neg">−${fmtAUD(reno)}</p></div>
@@ -853,104 +644,100 @@
       <div class="wf"><p class="wf-l">Buffer retained</p><p class="wf-v amb">${fmtAUD(buffer)}</p></div>
     `;
 
-    // Build price array
+    // Price rows
     const prices = [];
-    for (let p = pMin; p <= pMax + 0.5; p += pStep) {
-      prices.push(Math.round(p));
-      if (prices.length > 100) break;
-    }
+    for (let p = pMin; p <= pMax+0.5; p += pStep) { prices.push(Math.round(p)); if (prices.length>100) break; }
 
     const rows = prices.map(p => {
       const stamp   = sdNSW(p);
       const deposit = funds - stamp;
       const loan    = Math.max(0, p - deposit);
       const r       = rpay(loan, rateAnn, years);
-      // saving: positive = cheaper (downsize), negative = more expensive (upsize)
       const diff    = currRepay - r;
-      return { p, stamp, deposit, loan, r, diff, lvr: p > 0 ? loan/p*100 : 0 };
+      return { p, stamp, deposit, loan, r, diff, lvr: p>0 ? loan/p*100 : 0 };
     });
 
-    // Find sweet spot
+    // Sweet spot
     let sweetRow = null;
     if (mode === 'down') {
-      // Highest price where repayment < target
-      for (let i = rows.length-1; i >= 0; i--) {
-        if (rows[i].r > 0 && rows[i].r < target) { sweetRow = rows[i]; break; }
-      }
+      for (let i = rows.length-1; i >= 0; i--) { if (rows[i].r > 0 && rows[i].r < target) { sweetRow = rows[i]; break; } }
     } else {
-      // Upsize: lowest price where repayment > current (meaningful upsize) but still affordable
-      for (let i = 0; i < rows.length; i++) {
-        if (rows[i].r <= target) { sweetRow = rows[i]; }
-      }
+      for (let i = 0; i < rows.length; i++) { if (rows[i].r <= target) sweetRow = rows[i]; }
     }
     const freeRow = rows.find(r => r.loan === 0);
 
     // Header stats
     if (sweetRow) {
-      document.getElementById('hRepay').textContent  = fmtAUD(sweetRow.r) + '/mo';
-      document.getElementById('hSaving').textContent = fmtAUD(Math.abs(sweetRow.diff)) + '/mo';
+      document.getElementById('hRepay').textContent  = fmtAUD(sweetRow.r)+'/mo';
+      document.getElementById('hSaving').textContent = fmtAUD(Math.abs(sweetRow.diff))+'/mo';
     } else {
       document.getElementById('hRepay').textContent  = '—';
       document.getElementById('hSaving').textContent = '—';
     }
 
-    // Banner
-    const banner = document.getElementById('resultBanner');
-    const hasCurrentRepay = currRepay > 0;
+    // Build repay comparison + affordability strip HTML
+    function compareHTML(newR) {
+      const isEst  = !repayManual;
+      const diff   = currRepay - newR;
+      const isDown = diff >= 0;
+      const p      = pct(newR);
+      const s      = sp(newR);
 
-    // Reusable repayment comparison HTML builder
-    function repayCompare(newRepay, currentRepay, mode) {
-      if (!hasCurrentRepay) {
-        // No current repayment entered — show a simpler strip
-        return `
-          <div class="repay-compare">
-            <div class="repay-box">
-              <p class="repay-box-label">New repayment</p>
-              <p class="repay-box-val new-val">${fmtAUD(newRepay)}<span style="font-size:0.7em;font-weight:400;color:var(--ink-ghost)">/mo</span></p>
-              <p class="repay-box-sub">${fmtAUD(newRepay * 12)}/yr</p>
-            </div>
-          </div>`;
-      }
-      const diff = currentRepay - newRepay;
-      const isDown = diff > 0;
-      return `
+      const cmp = currRepay > 0 ? `
         <div class="repay-compare">
-          <div class="repay-box">
-            <p class="repay-box-label">Current repayment${!repayManuallySet ? ' <span style="color:var(--sage);font-size:8px;">EST.</span>' : ''}</p>
-            <p class="repay-box-val">${fmtAUD(currentRepay)}<span style="font-size:0.7em;font-weight:400;color:var(--ink-ghost)">/mo</span></p>
-            <p class="repay-box-sub">${fmtAUD(currentRepay * 12)}/yr</p>
+          <div class="rc">
+            <p class="rc-l">Current repayment${isEst ? '<span class="rc-est">EST</span>' : ''}</p>
+            <p class="rc-v">${fmtAUD(currRepay)}<span class="unit">/mo</span></p>
+            <p class="rc-s">${fmtAUD(currRepay*12)}/yr</p>
           </div>
-          <div class="repay-arrow">→</div>
-          <div class="repay-box">
-            <p class="repay-box-label">New repayment</p>
-            <p class="repay-box-val new-val">${newRepay === 0 ? 'Nil' : fmtAUD(newRepay)}<span style="font-size:0.7em;font-weight:400;color:var(--ink-ghost)">${newRepay > 0 ? '/mo' : ''}</span></p>
-            <p class="repay-box-sub">${newRepay === 0 ? 'Mortgage free' : fmtAUD(newRepay * 12) + '/yr'}</p>
+          <div class="rc-arrow">→</div>
+          <div class="rc">
+            <p class="rc-l">New repayment</p>
+            <p class="rc-v new">${newR===0?'Nil':fmtAUD(newR)}<span class="unit">${newR>0?'/mo':''}</span></p>
+            <p class="rc-s">${newR===0?'Mortgage free':fmtAUD(newR*12)+'/yr'}</p>
           </div>
-          <div class="repay-arrow">=</div>
-          <div class="repay-delta">
-            <p class="repay-delta-label">${isDown ? 'You save' : 'Extra cost'}</p>
-            <p class="repay-delta-val ${isDown ? 'save' : 'extra'}">${isDown ? '' : '+'}${fmtAUD(Math.abs(diff))}<span style="font-size:0.7em;font-weight:400;color:var(--ink-ghost)">/mo</span></p>
-            <p class="repay-delta-sub">${isDown ? '' : '+'}${fmtAUD(Math.abs(diff * 12))}/yr</p>
+          <div class="rc-arrow">=</div>
+          <div class="rc">
+            <p class="rc-l">${isDown?'You save':'Extra cost'}</p>
+            <p class="rc-v ${isDown?'save':'cost'}">${isDown?'':'+'}${fmtAUD(Math.abs(diff))}<span class="unit">/mo</span></p>
+            <p class="rc-s">${isDown?'':'+'}${fmtAUD(Math.abs(diff*12))}/yr</p>
+          </div>
+        </div>` : `
+        <div class="repay-compare">
+          <div class="rc">
+            <p class="rc-l">New repayment</p>
+            <p class="rc-v new">${fmtAUD(newR)}<span class="unit">/mo</span></p>
+            <p class="rc-s">${fmtAUD(newR*12)}/yr</p>
           </div>
         </div>`;
+
+      const af = `
+        <div class="afford-strip">
+          <span class="af ${afCls(p)}">${afTxt(p)}</span>
+          ${hasIncome && s!==null ? `<span class="af ${s>=0?'af-spare-pos':'af-spare-neg'}">${s>=0?'💚':'⚠️'} ${s>=0?fmtAUD(s):'−'+fmtAUD(Math.abs(s))} spare/mo${expenses>0?' after expenses':''}</span>` : ''}
+        </div>`;
+
+      return cmp + af;
     }
 
+    // Banner
+    const banner = document.getElementById('resultBanner');
     if (mode === 'down') {
       if (sweetRow) {
         banner.innerHTML = `
           <div class="result-banner sweet">
             <p class="banner-eyebrow">✦ Sweet spot — best value downsize</p>
-            <p class="banner-head">Buy at ${fmtAUD(sweetRow.p)} → <span>${fmtAUD(sweetRow.r)}/mo</span></p>
-            ${repayCompare(sweetRow.r, currRepay, mode)}
-            <p class="banner-sub" style="margin-top:0.75rem;">New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Stamp duty ${fmtAUD(sweetRow.stamp)} · Buffer retained ${fmtAUD(buffer)}</p>
+            <p class="banner-head">Buy at ${fmtAUD(sweetRow.p)} → <span class="hl">${fmtAUD(sweetRow.r)}/mo</span></p>
+            ${compareHTML(sweetRow.r)}
+            <p class="banner-sub" style="margin-top:0.5rem;">New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Stamp duty ${fmtAUD(sweetRow.stamp)} · Buffer ${fmtAUD(buffer)}</p>
           </div>`;
       } else if (freeRow) {
         banner.innerHTML = `
           <div class="result-banner sweet">
             <p class="banner-eyebrow">✦ Exceptional result — mortgage free</p>
-            <p class="banner-head">Buy at ${fmtAUD(freeRow.p)} with <span>no mortgage</span></p>
-            ${repayCompare(0, currRepay, mode)}
-            <p class="banner-sub" style="margin-top:0.75rem;">Your equity fully covers this purchase. Cash buffer retained: ${fmtAUD(buffer)}.</p>
+            <p class="banner-head">Buy at ${fmtAUD(freeRow.p)} with <span class="hl">no mortgage</span></p>
+            ${compareHTML(0)}
+            <p class="banner-sub" style="margin-top:0.5rem;">Your equity fully covers this purchase. Buffer retained: ${fmtAUD(buffer)}.</p>
           </div>`;
       } else {
         banner.innerHTML = `
@@ -961,14 +748,13 @@
           </div>`;
       }
     } else {
-      // Upsize mode
       if (sweetRow) {
         banner.innerHTML = `
           <div class="result-banner upsize">
             <p class="banner-eyebrow">🔑 Best value upsize within your target</p>
-            <p class="banner-head">Buy at ${fmtAUD(sweetRow.p)} → <span>${fmtAUD(sweetRow.r)}/mo</span></p>
-            ${repayCompare(sweetRow.r, currRepay, mode)}
-            <p class="banner-sub" style="margin-top:0.75rem;">New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Stamp duty ${fmtAUD(sweetRow.stamp)} · Buffer retained ${fmtAUD(buffer)}</p>
+            <p class="banner-head">Buy at ${fmtAUD(sweetRow.p)} → <span class="hl">${fmtAUD(sweetRow.r)}/mo</span></p>
+            ${compareHTML(sweetRow.r)}
+            <p class="banner-sub" style="margin-top:0.5rem;">New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Stamp duty ${fmtAUD(sweetRow.stamp)} · Buffer ${fmtAUD(buffer)}</p>
           </div>`;
       } else {
         banner.innerHTML = `
@@ -985,48 +771,54 @@
     tbody.innerHTML = '';
     rows.forEach(row => {
       const { p, stamp, deposit, loan, r, diff, lvr } = row;
-      const isFree    = loan === 0;
-      const isSweet   = sweetRow && p === sweetRow.p;
-      const isOver    = mode === 'down' ? (r >= target && !isFree) : (r > target);
+      const isFree  = loan === 0;
+      const isSweet = sweetRow && p === sweetRow.p;
+      const isOver  = mode==='down' ? (r >= target && !isFree) : (r > target);
 
-      let rowClass = '', badge = '', bClass = '';
-      if (isFree) {
-        rowClass = 'row-free'; badge = '✦ Mortgage free'; bClass = 'b-free';
-      } else if (isSweet && mode === 'down') {
-        rowClass = 'row-sweet'; badge = '✦ Sweet spot'; bClass = 'b-sweet';
-      } else if (isSweet && mode === 'up') {
-        rowClass = 'row-upsweet'; badge = '🔑 Best value'; bClass = 'b-up';
-      } else if (!isOver) {
-        badge = 'On target'; bClass = 'b-ok';
-      } else {
-        rowClass = 'row-over'; badge = mode === 'down' ? 'Over target' : 'Over budget'; bClass = 'b-over';
-      }
+      let rowClass='', badge='', bClass='';
+      if (isFree)                    { rowClass='row-free';    badge='✦ Mortgage free'; bClass='b-free'; }
+      else if (isSweet&&mode==='down'){ rowClass='row-sweet';  badge='✦ Sweet spot';    bClass='b-sweet';}
+      else if (isSweet&&mode==='up') { rowClass='row-upsweet'; badge='🔑 Best value';   bClass='b-up';   }
+      else if (!isOver)              { badge='On target';                                bClass='b-ok';   }
+      else                           { rowClass='row-over';    badge=mode==='down'?'Over target':'Over budget'; bClass='b-over'; }
 
-      const diffDisplay = mode === 'down'
-        ? `<span class="${diff > 0 ? 'saving-pos' : 'saving-neg'}">${diff >= 0 ? '' : '+'}${fmtAUD(diff)}/mo</span>`
-        : `<span class="${diff < 0 ? 'saving-neg' : 'saving-pos'}">${diff < 0 ? '+' + fmtAUD(Math.abs(diff)) : fmtAUD(diff)}/mo</span>`;
+      const diffD = mode==='down'
+        ? `<span class="${diff>0?'saving-pos':'saving-neg'}">${diff>=0?'':'+'}${fmtAUD(diff)}/mo</span>`
+        : `<span class="${diff<0?'saving-neg':'saving-pos'}">${diff<0?'+'+fmtAUD(Math.abs(diff)):fmtAUD(diff)}/mo</span>`;
+      const annD = mode==='down'
+        ? `<span class="${diff>0?'saving-pos':'saving-neg'}">${fmtAUD(diff*12)}/yr</span>`
+        : `<span class="${diff<0?'saving-neg':'saving-pos'}">${diff<0?'+'+fmtAUD(Math.abs(diff*12)):fmtAUD(diff*12)}/yr</span>`;
 
-      const annualDisplay = mode === 'down'
-        ? `<span class="${diff > 0 ? 'saving-pos' : 'saving-neg'}">${fmtAUD(diff * 12)}/yr</span>`
-        : `<span class="${diff < 0 ? 'saving-neg' : 'saving-pos'}">${diff < 0 ? '+' + fmtAUD(Math.abs(diff)*12) : fmtAUD(diff*12)}/yr</span>`;
+      const pp = pct(r), ss = sp(r);
+      const pctD = hasIncome
+        ? (isFree ? '<span class="pct-good">0%</span>' : `<span class="${pctCls(pp)}">${pp!==null?pp.toFixed(1)+'%':'—'}</span>`)
+        : '<span style="color:var(--ink-ghost)">—</span>';
+      const spD = hasIncome
+        ? (isFree ? `<span class="sp-pos">${fmtAUD(income-expenses)}</span>`
+                  : `<span class="${ss>=0?'sp-pos':'sp-neg'}">${ss>=0?fmtAUD(ss):'−'+fmtAUD(Math.abs(ss))}</span>`)
+        : '<span style="color:var(--ink-ghost)">—</span>';
 
       const tr = document.createElement('tr');
       if (rowClass) tr.className = rowClass;
       tr.innerHTML = `
         <td>${fmtAUD(p)}</td>
         <td>${fmtAUD(stamp)}</td>
-        <td>${fmtAUD(Math.max(0, deposit))}</td>
-        <td>${isFree ? '—' : fmtAUD(loan)}</td>
-        <td class="${isOver && !isFree ? 'repay-over' : ''}">${isFree ? 'Nil' : fmtAUD(r) + '/mo'}</td>
-        <td>${diffDisplay}</td>
-        <td>${annualDisplay}</td>
-        <td>${isFree ? '0.0%' : fmtPct(lvr)}</td>
+        <td>${fmtAUD(Math.max(0,deposit))}</td>
+        <td>${isFree?'—':fmtAUD(loan)}</td>
+        <td class="${isOver&&!isFree?'repay-over':''}">${isFree?'Nil':fmtAUD(r)+'/mo'}</td>
+        <td>${diffD}</td>
+        <td>${annD}</td>
+        <td class="income-col">${pctD}</td>
+        <td class="income-col">${spD}</td>
+        <td>${isFree?'0.0%':fmtPct(lvr)}</td>
         <td><span class="badge ${bClass}">${badge}</span></td>
       `;
       tbody.appendChild(tr);
     });
   }
 
+  // Init
+  syncRepayField();
   calc();
 </script>
 </body>
