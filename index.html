@@ -116,7 +116,7 @@
   .hstat-v { font-family: 'Lora', serif; font-size: 17px; color: #fff; font-weight: 500; }
 
   /* ── PAGE ── */
-  .page { max-width: 1040px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
+  .page { max-width: 1400px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
   .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
   .section-icon { width: 32px; height: 32px; background: var(--t-accent-pale); border: 1px solid var(--t-accent-border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; transition: background 0.35s, border-color 0.35s; }
   .section-title { font-family: 'Lora', serif; font-size: 15px; font-weight: 500; color: var(--ink-mid); }
@@ -125,6 +125,7 @@
   .card { background: var(--warm-white); border: 1px solid var(--stone-pale); border-radius: var(--r-xl); padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm); transition: box-shadow 0.2s; }
   .card:hover { box-shadow: var(--shadow); }
 
+  .inner { max-width: 1040px; }
   .input-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 1rem; }
   .field { display: flex; flex-direction: column; gap: 5px; }
   .field label { font-size: 11px; font-weight: 600; color: var(--ink-soft); letter-spacing: 0.03em; }
@@ -144,11 +145,11 @@
   input.is-auto   { border-color: var(--sage-pale) !important; background: #f4fbf6 !important; color: var(--sage) !important; font-style: italic; }
   input.is-manual { border-color: var(--gold) !important; background: #fffbf0 !important; font-style: normal; }
 
-  .divider { display: flex; align-items: center; gap: 12px; margin: 0.75rem 0 1.25rem; }
+  .divider { display: flex; align-items: center; gap: 12px; margin: 0.75rem 0 1.25rem; max-width: 1040px; }
   .divider-line { flex: 1; height: 1px; background: var(--stone-pale); }
   .divider-text { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); font-weight: 600; }
 
-  .waterfall { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 8px; margin-bottom: 1.25rem; }
+  .waterfall { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 8px; margin-bottom: 1.25rem; max-width: 1040px; }
   .wf { background: var(--warm-white); border: 1px solid var(--stone-pale); border-radius: var(--r-lg); padding: 12px 14px; box-shadow: var(--shadow-sm); transition: box-shadow 0.15s, transform 0.15s; }
   .wf:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
   .wf-l { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-ghost); margin-bottom: 4px; font-weight: 600; }
@@ -159,7 +160,7 @@
   .wf-v.amb { color: var(--gold); }
 
   /* ── RESULT BANNER ── */
-  .result-banner { border-radius: var(--r-xl); padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; position: relative; overflow: hidden; }
+  .result-banner { border-radius: var(--r-xl); padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; position: relative; overflow: hidden; max-width: 1040px; }
   .result-banner.sweet { background: linear-gradient(135deg, var(--t-sweet1) 0%, var(--t-sweet2) 100%); border: 1.5px solid var(--t-sweet-bd); }
   .result-banner.sweet::after { content: '🏡'; position: absolute; right: 1.75rem; top: 50%; transform: translateY(-50%); font-size: 3.5rem; opacity: 0.15; line-height: 1; }
   .result-banner.upsize { background: linear-gradient(135deg, #ddeef8 0%, #c0e0f5 100%); border: 1.5px solid #90c8e8; }
@@ -197,11 +198,11 @@
 
   /* ── TABLE ── */
   .tbl-wrap { border-radius: var(--r-xl); border: 1px solid var(--stone-pale); overflow: hidden; overflow-x: auto; box-shadow: var(--shadow-sm); }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
   thead { background: linear-gradient(135deg, var(--t-th1) 0%, var(--t-th2) 100%); transition: background 0.4s ease; }
-  th { padding: 11px 14px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.92); font-weight: 700; text-align: right; white-space: nowrap; }
+  th { padding: 10px 11px; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.92); font-weight: 700; text-align: right; white-space: nowrap; }
   th:first-child { text-align: left; }
-  td { padding: 11px 14px; border-bottom: 1px solid var(--cream2); text-align: right; white-space: nowrap; color: var(--ink-mid); background: var(--warm-white); transition: background 0.1s; font-weight: 500; }
+  td { padding: 10px 11px; border-bottom: 1px solid var(--cream2); text-align: right; white-space: nowrap; color: var(--ink-mid); background: var(--warm-white); transition: background 0.1s; font-weight: 500; }
   td:first-child { text-align: left; color: var(--ink); font-weight: 600; }
   tr:last-child td { border-bottom: none; }
   tbody tr:nth-child(even):not(.row-free):not(.row-sweet):not(.row-upsweet):not(.row-over) td { background: #faf7f4; }
@@ -237,11 +238,11 @@
   .b-over  { background: var(--cream2);    color: var(--ink-ghost); }
 
   /* ── MODE NOTICE ── */
-  .mode-notice { display: flex; align-items: center; gap: 10px; background: var(--sky-pale); border: 1px solid #b0d4e8; border-radius: var(--r-lg); padding: 10px 16px; font-size: 12px; color: var(--sky); margin-bottom: 1.25rem; font-weight: 500; }
+  .mode-notice { display: flex; align-items: center; gap: 10px; background: var(--sky-pale); border: 1px solid #b0d4e8; border-radius: var(--r-lg); padding: 10px 16px; font-size: 12px; color: var(--sky); margin-bottom: 1.25rem; font-weight: 500; max-width: 1040px; }
   .mode-notice.down { background: var(--sage-wash); border-color: var(--sage-pale); color: var(--sage); }
 
   /* ── FOOTER ── */
-  .footer { margin-top: 2rem; padding: 1.25rem 1.5rem; background: var(--stone-wash); border: 1px solid var(--stone-pale); border-radius: var(--r-xl); font-size: 11px; color: var(--ink-ghost); line-height: 1.8; }
+  .footer { margin-top: 2rem; padding: 1.25rem 1.5rem; background: var(--stone-wash); border: 1px solid var(--stone-pale); border-radius: var(--r-xl); font-size: 11px; color: var(--ink-ghost); line-height: 1.8; max-width: 1040px; }
   .footer strong { color: var(--ink-soft); }
 
   /* ── ANIMATIONS ── */
@@ -300,12 +301,12 @@
 
 <div class="page">
 
-  <div class="mode-notice down" id="modeNotice">
+  <div class="mode-notice down inner" id="modeNotice">
     ⬇ Downsize mode — the table shows repayment <strong>reductions</strong> as you move to a lower-value home.
   </div>
 
   <!-- CURRENT PROPERTY -->
-  <div class="card">
+  <div class="card inner">
     <div class="section-head">
       <div class="section-icon">🏠</div>
       <div><p class="section-title">Your current property</p><p class="section-sub">What you're selling and what you owe</p></div>
@@ -340,7 +341,7 @@
   </div>
 
   <!-- SAVINGS -->
-  <div class="card">
+  <div class="card inner">
     <div class="section-head">
       <div class="section-icon">💰</div>
       <div><p class="section-title">Savings &amp; offset account</p><p class="section-sub">Cash you'll bring to the new purchase</p></div>
@@ -370,7 +371,7 @@
   </div>
 
   <!-- LOAN -->
-  <div class="card">
+  <div class="card inner">
     <div class="section-head">
       <div class="section-icon">📋</div>
       <div><p class="section-title">Loan settings</p><p class="section-sub">Your new mortgage details</p></div>
@@ -408,7 +409,7 @@
   </div>
 
   <!-- INCOME -->
-  <div class="card">
+  <div class="card inner">
     <div class="section-head">
       <div class="section-icon">👨‍👩‍👧</div>
       <div><p class="section-title">Household income &amp; expenses</p><p class="section-sub">Optional — unlocks affordability % and spare cash in results</p></div>
@@ -432,7 +433,7 @@
   </div>
 
   <!-- PURCHASE RANGE -->
-  <div class="card">
+  <div class="card inner">
     <div class="section-head">
       <div class="section-icon">🔍</div>
       <div><p class="section-title">Purchase price range</p><p class="section-sub">The range of properties you're considering</p></div>
@@ -459,7 +460,7 @@
     </div>
   </div>
 
-  <div class="divider"><div class="divider-line"></div><span class="divider-text">Your results</span><div class="divider-line"></div></div>
+  <div class="divider inner"><div class="divider-line"></div><span class="divider-text">Your results</span><div class="divider-line"></div></div>
 
   <div class="waterfall" id="waterfall"></div>
   <div id="resultBanner"></div>
