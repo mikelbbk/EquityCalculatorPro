@@ -320,11 +320,59 @@
   .banner-head span { color: var(--sage); }
   .result-banner.upsize .banner-head span { color: var(--sky); }
   .banner-sub {
-    font-size: 13px; color: var(--ink-soft);
+    font-size: 13px; color: var(--ink-mid);
     font-weight: 400; line-height: 1.7; max-width: 580px;
   }
   .banner-sub strong { color: var(--sage); font-weight: 700; }
   .result-banner.upsize .banner-sub strong { color: var(--sky); }
+
+  /* repayment comparison strip */
+  .repay-compare {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 1rem; flex-wrap: wrap;
+  }
+  .repay-box {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: var(--r-lg);
+    padding: 10px 16px;
+    min-width: 130px;
+  }
+  .result-banner.upsize .repay-box { background: rgba(255,255,255,0.55); }
+  .repay-box-label {
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-ghost); font-weight: 700; margin-bottom: 3px;
+  }
+  .repay-box-val {
+    font-family: 'Lora', serif;
+    font-size: 1.35rem; font-weight: 600; color: var(--ink);
+    line-height: 1.1;
+  }
+  .repay-box-val.new-val { color: var(--sage); }
+  .result-banner.upsize .repay-box-val.new-val { color: var(--sky); }
+  .repay-box-sub {
+    font-size: 10px; color: var(--ink-ghost); margin-top: 2px;
+  }
+  .repay-arrow {
+    font-size: 1.4rem; color: var(--ink-mist); flex-shrink: 0;
+  }
+  .repay-delta {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: var(--r-lg);
+    padding: 10px 16px; min-width: 130px;
+  }
+  .repay-delta-label {
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-ghost); font-weight: 700; margin-bottom: 3px;
+  }
+  .repay-delta-val {
+    font-family: 'Lora', serif;
+    font-size: 1.35rem; font-weight: 600; line-height: 1.1;
+  }
+  .repay-delta-val.save { color: var(--green-pill); }
+  .repay-delta-val.extra { color: var(--terracotta); }
+  .repay-delta-sub { font-size: 10px; color: var(--ink-ghost); margin-top: 2px; }
 
   /* ── TABLE ── */
   .tbl-wrap {
@@ -333,12 +381,12 @@
     overflow: hidden; overflow-x: auto;
     box-shadow: var(--shadow-sm);
   }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
   thead { background: linear-gradient(135deg, var(--sage) 0%, var(--sage-mid) 100%); }
   th {
     padding: 11px 14px;
     font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: rgba(255,255,255,0.75); font-weight: 700;
+    color: rgba(255,255,255,0.95); font-weight: 700;
     text-align: right; white-space: nowrap;
   }
   th:first-child { text-align: left; }
@@ -347,22 +395,23 @@
     padding: 11px 14px;
     border-bottom: 1px solid var(--cream2);
     text-align: right; white-space: nowrap;
-    color: var(--ink-soft);
+    color: var(--ink-mid);
     background: var(--warm-white);
     transition: background 0.1s;
   }
   td:first-child { text-align: left; color: var(--ink); font-weight: 600; }
   tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even):not(.row-free):not(.row-sweet):not(.row-upsweet):not(.row-over) td { background: #faf7f4; }
   tr:not(.row-free):not(.row-sweet):not(.row-upsweet):not(.row-over):hover td { background: var(--cream); }
 
-  tr.row-free td { background: #edfaf3; }
+  tr.row-free td { background: #edfaf3; color: var(--ink-mid); }
   tr.row-free td:first-child { color: var(--green-pill); }
-  tr.row-sweet td { background: var(--sage-wash); }
+  tr.row-sweet td { background: var(--sage-wash); color: var(--ink); }
   tr.row-sweet td:first-child { color: var(--sage); }
-  tr.row-upsweet td { background: var(--sky-pale); }
+  tr.row-upsweet td { background: var(--sky-pale); color: var(--ink); }
   tr.row-upsweet td:first-child { color: var(--sky); }
-  tr.row-over td { color: var(--ink-mist); }
-  tr.row-over td:first-child { color: var(--ink-mist); }
+  tr.row-over td { color: #9e918a; }
+  tr.row-over td:first-child { color: #9e918a; }
 
   .saving-pos { color: var(--sage) !important; font-weight: 700; }
   .saving-neg { color: var(--terracotta) !important; font-weight: 700; }
@@ -593,9 +642,9 @@
         <label>Current repayment / mo</label>
         <div class="input-wrap has-pfx">
           <span class="pfx">$</span>
-          <input type="number" id="currentRepay" value="0" step="100" oninput="calc()">
+          <input type="number" id="currentRepay" value="" step="100" placeholder="Auto" oninput="onRepayInput()" style="transition: background 0.2s;">
         </div>
-        <p class="field-hint">Your existing monthly repayment</p>
+        <p class="field-hint" id="currentRepayHint" style="color:var(--sage);">Estimated from mortgage &amp; rate</p>
       </div>
       <div class="field">
         <label>Repayment target / mo</label>
@@ -683,6 +732,31 @@
 
 <script>
   let mode = 'down'; // 'down' or 'up'
+  let repayManuallySet = false; // tracks whether user has overridden the auto-estimate
+
+  function onRepayInput() {
+    const field = document.getElementById('currentRepay');
+    const hint  = document.getElementById('currentRepayHint');
+    if (field.value === '' || field.value === null) {
+      repayManuallySet = false;
+      field.style.background = '';
+      hint.style.color = 'var(--sage)';
+      hint.textContent = 'Estimated from mortgage & rate';
+    } else {
+      repayManuallySet = true;
+      field.style.background = '#fffef8';
+      hint.style.color = 'var(--ink-ghost)';
+      hint.textContent = 'Manually entered — clear to auto-estimate';
+    }
+    calc();
+  }
+
+  function estimateRepay(mortgage, rateAnn, years) {
+    if (mortgage <= 0) return 0;
+    const r = rateAnn / 12, n = years * 12;
+    if (r === 0) return mortgage / n;
+    return mortgage * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  }
 
   function setMode(m) {
     mode = m;
@@ -742,7 +816,17 @@
     const reno       = v('reno');
     const rateAnn    = v('rate') / 100;
     const years      = v('loanYears');
-    const currRepay  = v('currentRepay');
+
+    // Current repayment: use manual entry if set, otherwise estimate from mortgage
+    const manualRepay = parseFloat(document.getElementById('currentRepay').value);
+    const autoRepay   = estimateRepay(mortgage, rateAnn, years);
+    const currRepay   = (repayManuallySet && !isNaN(manualRepay) && manualRepay > 0) ? manualRepay : autoRepay;
+
+    // Sync the field placeholder to show the estimate when not manually set
+    const repayField = document.getElementById('currentRepay');
+    if (!repayManuallySet) {
+      repayField.placeholder = autoRepay > 0 ? Math.round(autoRepay).toLocaleString('en-AU') : 'Auto';
+    }
     const target     = v('targetRepay');
     const pMin       = v('priceMin');
     const pMax       = v('priceMax');
@@ -812,20 +896,61 @@
 
     // Banner
     const banner = document.getElementById('resultBanner');
+    const hasCurrentRepay = currRepay > 0;
+
+    // Reusable repayment comparison HTML builder
+    function repayCompare(newRepay, currentRepay, mode) {
+      if (!hasCurrentRepay) {
+        // No current repayment entered — show a simpler strip
+        return `
+          <div class="repay-compare">
+            <div class="repay-box">
+              <p class="repay-box-label">New repayment</p>
+              <p class="repay-box-val new-val">${fmtAUD(newRepay)}<span style="font-size:0.7em;font-weight:400;color:var(--ink-ghost)">/mo</span></p>
+              <p class="repay-box-sub">${fmtAUD(newRepay * 12)}/yr</p>
+            </div>
+          </div>`;
+      }
+      const diff = currentRepay - newRepay;
+      const isDown = diff > 0;
+      return `
+        <div class="repay-compare">
+          <div class="repay-box">
+            <p class="repay-box-label">Current repayment${!repayManuallySet ? ' <span style="color:var(--sage);font-size:8px;">EST.</span>' : ''}</p>
+            <p class="repay-box-val">${fmtAUD(currentRepay)}<span style="font-size:0.7em;font-weight:400;color:var(--ink-ghost)">/mo</span></p>
+            <p class="repay-box-sub">${fmtAUD(currentRepay * 12)}/yr</p>
+          </div>
+          <div class="repay-arrow">→</div>
+          <div class="repay-box">
+            <p class="repay-box-label">New repayment</p>
+            <p class="repay-box-val new-val">${newRepay === 0 ? 'Nil' : fmtAUD(newRepay)}<span style="font-size:0.7em;font-weight:400;color:var(--ink-ghost)">${newRepay > 0 ? '/mo' : ''}</span></p>
+            <p class="repay-box-sub">${newRepay === 0 ? 'Mortgage free' : fmtAUD(newRepay * 12) + '/yr'}</p>
+          </div>
+          <div class="repay-arrow">=</div>
+          <div class="repay-delta">
+            <p class="repay-delta-label">${isDown ? 'You save' : 'Extra cost'}</p>
+            <p class="repay-delta-val ${isDown ? 'save' : 'extra'}">${isDown ? '' : '+'}${fmtAUD(Math.abs(diff))}<span style="font-size:0.7em;font-weight:400;color:var(--ink-ghost)">/mo</span></p>
+            <p class="repay-delta-sub">${isDown ? '' : '+'}${fmtAUD(Math.abs(diff * 12))}/yr</p>
+          </div>
+        </div>`;
+    }
+
     if (mode === 'down') {
       if (sweetRow) {
         banner.innerHTML = `
           <div class="result-banner sweet">
             <p class="banner-eyebrow">✦ Sweet spot — best value downsize</p>
             <p class="banner-head">Buy at ${fmtAUD(sweetRow.p)} → <span>${fmtAUD(sweetRow.r)}/mo</span></p>
-            <p class="banner-sub">Saves <strong>${fmtAUD(sweetRow.diff)}/mo</strong> · ${fmtAUD(sweetRow.diff * 12)}/yr · New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Buffer ${fmtAUD(buffer)}</p>
+            ${repayCompare(sweetRow.r, currRepay, mode)}
+            <p class="banner-sub" style="margin-top:0.75rem;">New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Stamp duty ${fmtAUD(sweetRow.stamp)} · Buffer retained ${fmtAUD(buffer)}</p>
           </div>`;
       } else if (freeRow) {
         banner.innerHTML = `
           <div class="result-banner sweet">
             <p class="banner-eyebrow">✦ Exceptional result — mortgage free</p>
             <p class="banner-head">Buy at ${fmtAUD(freeRow.p)} with <span>no mortgage</span></p>
-            <p class="banner-sub">Your equity fully covers this purchase. Cash buffer retained: ${fmtAUD(buffer)}.</p>
+            ${repayCompare(0, currRepay, mode)}
+            <p class="banner-sub" style="margin-top:0.75rem;">Your equity fully covers this purchase. Cash buffer retained: ${fmtAUD(buffer)}.</p>
           </div>`;
       } else {
         banner.innerHTML = `
@@ -838,12 +963,12 @@
     } else {
       // Upsize mode
       if (sweetRow) {
-        const extra = sweetRow.r - currRepay;
         banner.innerHTML = `
           <div class="result-banner upsize">
             <p class="banner-eyebrow">🔑 Best value upsize within your target</p>
             <p class="banner-head">Buy at ${fmtAUD(sweetRow.p)} → <span>${fmtAUD(sweetRow.r)}/mo</span></p>
-            <p class="banner-sub">${extra > 0 ? `<strong>+${fmtAUD(extra)}/mo</strong> more than current · ` : 'Within current repayment · '}New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Stamp duty ${fmtAUD(sweetRow.stamp)}</p>
+            ${repayCompare(sweetRow.r, currRepay, mode)}
+            <p class="banner-sub" style="margin-top:0.75rem;">New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Stamp duty ${fmtAUD(sweetRow.stamp)} · Buffer retained ${fmtAUD(buffer)}</p>
           </div>`;
       } else {
         banner.innerHTML = `
@@ -903,6 +1028,6 @@
   }
 
   calc();
-</script>  
+</script>
 </body>
 </html>
