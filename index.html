@@ -505,15 +505,16 @@
   }
   function fmtPct(n) { return isNaN(n) ? '—' : n.toFixed(1) + '%'; }
 
+  // NSW Transfer Duty — 2025-26 rates (Revenue NSW, effective 1 July 2025)
   function sdNSW(p) {
-    if (p <= 0) return 0;
-    if (p <= 16000)   return p * 0.0125;
-    if (p <= 35000)   return 200   + (p-16000)*0.015;
-    if (p <= 87000)   return 485   + (p-35000)*0.0175;
-    if (p <= 327000)  return 1395  + (p-87000)*0.035;
-    if (p <= 1089000) return 9795  + (p-327000)*0.045;
-    if (p <= 3268000) return 44095 + (p-1089000)*0.055;
-    return 163940 + (p-3268000)*0.07;
+    if (p <= 0)       return 0;
+    if (p <= 17000)   return p * 0.0125;                        // $1.25 per $100
+    if (p <= 36000)   return 212.50  + (p-17000) * 0.015;      // + $1.50 per $100
+    if (p <= 97000)   return 497.50  + (p-36000) * 0.0175;     // + $1.75 per $100
+    if (p <= 364000)  return 1564.50 + (p-97000) * 0.035;      // + $3.50 per $100
+    if (p <= 1212000) return 10909.50+ (p-364000)* 0.045;      // + $4.50 per $100
+    if (p <= 3721000) return 49024.50+ (p-1212000)*0.055;      // + $5.50 per $100
+    return 186667    + (p-3721000)  * 0.07;                    // premium: + $7.00 per $100
   }
 
   function rpay(loan, rate, years) {
