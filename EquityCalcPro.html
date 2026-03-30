@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equity Calculator Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage:       #4a7c59;
+    --sage-mid:   #5a9169;
+    --sage-light: #7aad89;
+    --sage-pale:  #c8dece;
+    --sage-wash:  #eef5f0;
+    --stone:      #8a7968;
+    --stone-light:#b5a898;
+    --stone-pale: #e8e0d8;
+    --stone-wash: #f5f1ec;
+    --cream:      #faf7f2;
+    --cream2:     #f2ede6;
+    --warm-white: #ffffff;
+    --bark:       #5c4a3a;
+    --bark-mid:   #7a6252;
+    --ink:        #2d2520;
+    --ink-mid:    #4a3d35;
+    --ink-soft:   #7a6d65;
+    --ink-ghost:  #b8ada5;
+    --ink-mist:   #d8cfc8;
+    --terracotta: #c4714a;
+    --terra-pale: #f5e8e0;
+    --sky:        #6a9ab0;
+    --sky-pale:   #e0ecf2;
+    --gold:       #c8933a;
+    --gold-pale:  #f5e8d0;
+    --green-pill: #2d6a45;
+    --green-bg:   #e8f4ec;
+    --amber-pill: #8a5e20;
+    --amber-bg:   #fdf0dc;
+    --rose-pill:  #8a3a3a;
+    --rose-bg:    #faeaea;
+    --mist-pill:  #5a6a5a;
+    --mist-bg:    #eef2ee;
+    --r:          8px;
+    --r-lg:       14px;
+    --r-xl:       20px;
+    --shadow-sm:  0 1px 4px rgba(45,37,32,0.06);
+    --shadow:     0 3px 14px rgba(45,37,32,0.09);
+    --shadow-lg:  0 8px 32px rgba(45,37,32,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234a7c59' fill-opacity='0.025'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: relative; z-index: 1;
+    background: linear-gradient(160deg, var(--sage) 0%, #3d6b4a 55%, #2e5238 100%);
+    padding: 0;
+    overflow: hidden;
+  }
+  .header-leaves {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  }
+  .leaf {
+    position: absolute;
+    opacity: 0.12;
+    font-size: 80px;
+    line-height: 1;
+    animation: sway 8s ease-in-out infinite alternate;
+  }
+  .leaf:nth-child(1) { top: -10px; right: 40px; font-size: 110px; animation-delay: 0s; }
+  .leaf:nth-child(2) { bottom: -15px; right: 140px; font-size: 70px; animation-delay: -3s; }
+  .leaf:nth-child(3) { top: 20px; right: 200px; font-size: 50px; animation-delay: -5s; }
+  .leaf:nth-child(4) { bottom: 0; left: -20px; font-size: 90px; animation-delay: -2s; opacity: 0.07; }
+  @keyframes sway {
+    from { transform: rotate(-4deg) scale(1); }
+    to   { transform: rotate(4deg) scale(1.04); }
+  }
+
+  .header-inner {
+    max-width: 1040px; margin: 0 auto;
+    padding: 2.5rem 2rem 2.25rem;
+    position: relative; z-index: 1;
+  }
+
+  .header-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.85); font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .header-eyebrow svg { width: 10px; height: 10px; opacity: 0.8; }
+
+  .header h1 {
+    font-family: 'Lora', Georgia, serif;
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.01em;
+  }
+  .header h1 em { font-style: italic; font-weight: 400; color: rgba(255,255,255,0.8); }
+
+  .header-sub {
+    font-size: 14px; color: rgba(255,255,255,0.65);
+    font-weight: 300; max-width: 500px; line-height: 1.7;
+  }
+
+  /* header mode toggle */
+  .mode-toggle {
+    display: inline-flex; margin-top: 1.5rem;
+    background: rgba(0,0,0,0.2);
+    border-radius: 30px; padding: 4px;
+    gap: 2px;
+  }
+  .mode-btn {
+    padding: 7px 20px; border-radius: 26px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+    border: none; cursor: pointer;
+    transition: all 0.25s ease;
+    color: rgba(255,255,255,0.6);
+    background: transparent;
+  }
+  .mode-btn.active {
+    background: #ffffff;
+    color: var(--sage);
+    box-shadow: var(--shadow);
+  }
+
+  /* header stats strip */
+  .header-stats {
+    display: flex; gap: 0; margin-top: 1.75rem;
+    background: rgba(0,0,0,0.18);
+    border-radius: var(--r-lg); overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+  }
+  .hstat {
+    flex: 1; min-width: 130px;
+    padding: 12px 16px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .hstat:last-child { border-right: none; }
+  .hstat-l { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); font-weight: 600; margin-bottom: 3px; }
+  .hstat-v { font-family: 'Lora', serif; font-size: 17px; color: #ffffff; font-weight: 500; }
+
+  /* ── PAGE ── */
+  .page { max-width: 1040px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
+
+  /* ── SECTION HEADING ── */
+  .section-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 1rem;
+  }
+  .section-icon {
+    width: 32px; height: 32px;
+    background: var(--sage-wash);
+    border: 1px solid var(--sage-pale);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Lora', serif;
+    font-size: 15px; font-weight: 500;
+    color: var(--ink-mid);
+  }
+  .section-sub { font-size: 11px; color: var(--ink-ghost); margin-top: 1px; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--warm-white);
+    border: 1px solid var(--stone-pale);
+    border-radius: var(--r-xl);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: var(--shadow); }
+
+  /* ── INPUT GRID ── */
+  .input-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 1rem; }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11px; font-weight: 600; color: var(--ink-soft); letter-spacing: 0.03em; }
+  .field-hint { font-size: 10px; color: var(--ink-ghost); }
+
+  .input-wrap { position: relative; }
+  .pfx, .sfx {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 13px; color: var(--ink-ghost); pointer-events: none;
+  }
+  .pfx { left: 11px; }
+  .sfx { right: 11px; }
+
+  input[type="number"] {
+    width: 100%;
+    background: var(--cream);
+    border: 1.5px solid var(--ink-mist);
+    border-radius: var(--r);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 500;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  input[type="number"]:focus {
+    border-color: var(--sage-mid);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(74,124,89,0.12);
+  }
+  .has-pfx input { padding-left: 24px; }
+  .has-sfx input { padding-right: 28px; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0.75rem 0 1.25rem;
+  }
+  .divider-line { flex:1; height:1px; background: var(--stone-pale); }
+  .divider-text {
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-ghost); font-weight: 600;
+  }
+
+  /* ── WATERFALL ── */
+  .waterfall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 8px; margin-bottom: 1.25rem;
+  }
+  .wf {
+    background: var(--warm-white);
+    border: 1px solid var(--stone-pale);
+    border-radius: var(--r-lg);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .wf:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+  .wf-l {
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-ghost); margin-bottom: 4px; font-weight: 600;
+  }
+  .wf-v { font-family: 'Lora', serif; font-size: 16px; font-weight: 500; color: var(--ink); }
+  .wf-v.pos { color: var(--sage); }
+  .wf-v.neg { color: var(--terracotta); }
+  .wf-v.hi  { color: var(--sky); }
+  .wf-v.amb { color: var(--gold); }
+
+  /* ── RESULT BANNER ── */
+  .result-banner {
+    border-radius: var(--r-xl);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.25rem;
+    position: relative; overflow: hidden;
+  }
+  .result-banner.sweet {
+    background: linear-gradient(135deg, var(--sage-wash) 0%, #dff0e6 100%);
+    border: 1.5px solid var(--sage-pale);
+  }
+  .result-banner.sweet::after {
+    content: '🏡';
+    position: absolute; right: 1.75rem; top: 50%; transform: translateY(-50%);
+    font-size: 3.5rem; opacity: 0.18; line-height: 1;
+  }
+  .result-banner.upsize {
+    background: linear-gradient(135deg, var(--sky-pale) 0%, #d8ecf5 100%);
+    border: 1.5px solid #b0d4e8;
+  }
+  .result-banner.upsize::after {
+    content: '🔑';
+    position: absolute; right: 1.75rem; top: 50%; transform: translateY(-50%);
+    font-size: 3.5rem; opacity: 0.18; line-height: 1;
+  }
+  .result-banner.none {
+    background: var(--stone-wash);
+    border: 1.5px solid var(--stone-pale);
+  }
+  .result-banner.none::after { content: ''; }
+  .banner-eyebrow {
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--sage); font-weight: 700; margin-bottom: 6px;
+  }
+  .result-banner.upsize .banner-eyebrow { color: var(--sky); }
+  .result-banner.none .banner-eyebrow { color: var(--ink-ghost); }
+  .banner-head {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.2rem, 3vw, 1.65rem);
+    font-weight: 600; color: var(--ink);
+    margin-bottom: 6px; line-height: 1.2;
+  }
+  .banner-head span { color: var(--sage); }
+  .result-banner.upsize .banner-head span { color: var(--sky); }
+  .banner-sub {
+    font-size: 13px; color: var(--ink-soft);
+    font-weight: 400; line-height: 1.7; max-width: 580px;
+  }
+  .banner-sub strong { color: var(--sage); font-weight: 700; }
+  .result-banner.upsize .banner-sub strong { color: var(--sky); }
+
+  /* ── TABLE ── */
+  .tbl-wrap {
+    border-radius: var(--r-xl);
+    border: 1px solid var(--stone-pale);
+    overflow: hidden; overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead { background: linear-gradient(135deg, var(--sage) 0%, var(--sage-mid) 100%); }
+  th {
+    padding: 11px 14px;
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.75); font-weight: 700;
+    text-align: right; white-space: nowrap;
+  }
+  th:first-child { text-align: left; }
+
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--cream2);
+    text-align: right; white-space: nowrap;
+    color: var(--ink-soft);
+    background: var(--warm-white);
+    transition: background 0.1s;
+  }
+  td:first-child { text-align: left; color: var(--ink); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  tr:not(.row-free):not(.row-sweet):not(.row-upsweet):not(.row-over):hover td { background: var(--cream); }
+
+  tr.row-free td { background: #edfaf3; }
+  tr.row-free td:first-child { color: var(--green-pill); }
+  tr.row-sweet td { background: var(--sage-wash); }
+  tr.row-sweet td:first-child { color: var(--sage); }
+  tr.row-upsweet td { background: var(--sky-pale); }
+  tr.row-upsweet td:first-child { color: var(--sky); }
+  tr.row-over td { color: var(--ink-mist); }
+  tr.row-over td:first-child { color: var(--ink-mist); }
+
+  .saving-pos { color: var(--sage) !important; font-weight: 700; }
+  .saving-neg { color: var(--terracotta) !important; font-weight: 700; }
+  .repay-over { color: var(--terracotta) !important; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 9px; padding: 2px 8px; border-radius: 20px;
+    letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700;
+  }
+  .b-free   { background: var(--green-bg);  color: var(--green-pill); }
+  .b-sweet  { background: var(--sage-wash); color: var(--sage); border: 1px solid var(--sage-pale); }
+  .b-up     { background: var(--sky-pale);  color: var(--sky); border: 1px solid #b0d4e8; }
+  .b-ok     { background: var(--amber-bg);  color: var(--amber-pill); }
+  .b-over   { background: var(--cream2);    color: var(--ink-ghost); }
+
+  /* ── MODE NOTICE ── */
+  .mode-notice {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--sky-pale);
+    border: 1px solid #b0d4e8;
+    border-radius: var(--r-lg);
+    padding: 10px 16px;
+    font-size: 12px; color: var(--sky);
+    margin-bottom: 1.25rem;
+    font-weight: 500;
+  }
+  .mode-notice.down {
+    background: var(--sage-wash);
+    border-color: var(--sage-pale);
+    color: var(--sage);
+  }
+  .mode-notice.hidden { display: none; }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 2rem; padding: 1.25rem 1.5rem;
+    background: var(--stone-wash);
+    border: 1px solid var(--stone-pale);
+    border-radius: var(--r-xl);
+    font-size: 11px; color: var(--ink-ghost); line-height: 1.8;
+  }
+  .footer strong { color: var(--ink-soft); }
+
+  /* ── ANIMATIONS ── */
+  .card, .result-banner, .tbl-wrap {
+    animation: riseIn 0.35s ease both;
+  }
+  .card:nth-child(2) { animation-delay: 0.05s; }
+  .card:nth-child(3) { animation-delay: 0.10s; }
+  .card:nth-child(4) { animation-delay: 0.15s; }
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:640px) {
+    .page { padding: 1rem; }
+    .header-inner { padding: 1.75rem 1rem 1.5rem; }
+    .waterfall { grid-template-columns: 1fr 1fr; }
+    .input-grid { grid-template-columns: 1fr 1fr; }
+    .hstat { min-width: 100px; }
+    .result-banner.sweet::after,
+    .result-banner.upsize::after { display: none; }
+  }
+  @media(max-width:400px) {
+    .input-grid { grid-template-columns: 1fr; }
+    .header-stats { flex-direction: column; }
+    .hstat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-leaves" aria-hidden="true">
+    <span class="leaf">🌿</span>
+    <span class="leaf">🍃</span>
+    <span class="leaf">🌱</span>
+    <span class="leaf">🌳</span>
+  </div>
+  <div class="header-inner">
+    <div class="header-eyebrow">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Property Planning Tool
+    </div>
+    <h1>Equity Calculator <em>Pro</em></h1>
+    <p class="header-sub">Plan your next move with confidence — whether you're downsizing for a simpler life or upsizing for your growing family.</p>
+
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btnDown" onclick="setMode('down')">⬇ Downsize</button>
+      <button class="mode-btn" id="btnUp" onclick="setMode('up')">⬆ Upsize</button>
+    </div>
+
+    <div class="header-stats">
+      <div class="hstat">
+        <p class="hstat-l">Net sale proceeds</p>
+        <p class="hstat-v" id="hNetSale">—</p>
+      </div>
+      <div class="hstat">
+        <p class="hstat-l">Funds available</p>
+        <p class="hstat-v" id="hFunds">—</p>
+      </div>
+      <div class="hstat">
+        <p class="hstat-l">Sweet spot repayment</p>
+        <p class="hstat-v" id="hRepay">—</p>
+      </div>
+      <div class="hstat">
+        <p class="hstat-l">Sweet spot saving</p>
+        <p class="hstat-v" id="hSaving">—</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- MODE NOTICE -->
+  <div class="mode-notice down" id="modeNotice">
+    ⬇ Downsize mode — the table shows repayment <strong>reductions</strong> as you move to a lower-value home.
+  </div>
+
+  <!-- CURRENT PROPERTY -->
+  <div class="card">
+    <div class="section-head">
+      <div class="section-icon">🏠</div>
+      <div>
+        <p class="section-title">Your current property</p>
+        <p class="section-sub">What you're selling and what you owe</p>
+      </div>
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label>Estimated sale price</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="salePrice" value="1000000" step="25000" oninput="calc()">
+        </div>
+      </div>
+      <div class="field">
+        <label>Mortgage owing</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="mortgage" value="500000" step="10000" oninput="calc()">
+        </div>
+      </div>
+      <div class="field">
+        <label>Agent commission</label>
+        <div class="input-wrap has-sfx">
+          <input type="number" id="agentPct" value="2.0" step="0.1" min="0" max="5" oninput="calc()">
+          <span class="sfx">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Legal &amp; moving costs</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="miscCosts" value="5000" step="1000" oninput="calc()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASH -->
+  <div class="card">
+    <div class="section-head">
+      <div class="section-icon">💰</div>
+      <div>
+        <p class="section-title">Savings &amp; offset account</p>
+        <p class="section-sub">Cash you'll bring to the new purchase</p>
+      </div>
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label>Total offset / savings</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="offsetTotal" value="0" step="10000" oninput="calc()">
+        </div>
+      </div>
+      <div class="field">
+        <label>Cash buffer to keep</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="buffer" value="0" step="10000" oninput="calc()">
+        </div>
+        <p class="field-hint">Held back — not deployed into purchase</p>
+      </div>
+      <div class="field">
+        <label>Renovation budget</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="reno" value="0" step="10000" oninput="calc()">
+        </div>
+        <p class="field-hint">Cash-funded, not added to loan</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOAN SETTINGS -->
+  <div class="card">
+    <div class="section-head">
+      <div class="section-icon">📋</div>
+      <div>
+        <p class="section-title">Loan settings</p>
+        <p class="section-sub">Your new mortgage details</p>
+      </div>
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label>Interest rate</label>
+        <div class="input-wrap has-sfx">
+          <input type="number" id="rate" value="5.63" step="0.05" min="1" max="15" oninput="calc()">
+          <span class="sfx">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Loan term</label>
+        <div class="input-wrap has-sfx">
+          <input type="number" id="loanYears" value="30" step="1" min="5" max="30" oninput="calc()">
+          <span class="sfx">yrs</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Current repayment / mo</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="currentRepay" value="0" step="100" oninput="calc()">
+        </div>
+        <p class="field-hint">Your existing monthly repayment</p>
+      </div>
+      <div class="field">
+        <label>Repayment target / mo</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="targetRepay" value="6000" step="500" oninput="calc()">
+        </div>
+        <p class="field-hint">Highlights your goal repayment range</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PURCHASE RANGE -->
+  <div class="card">
+    <div class="section-head">
+      <div class="section-icon">🔍</div>
+      <div>
+        <p class="section-title">Purchase price range</p>
+        <p class="section-sub">The range of properties you're considering</p>
+      </div>
+    </div>
+    <div class="input-grid">
+      <div class="field">
+        <label>Minimum price</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="priceMin" value="1500000" step="50000" oninput="calc()">
+        </div>
+      </div>
+      <div class="field">
+        <label>Maximum price</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="priceMax" value="2500000" step="50000" oninput="calc()">
+        </div>
+      </div>
+      <div class="field">
+        <label>Price step / interval</label>
+        <div class="input-wrap has-pfx">
+          <span class="pfx">$</span>
+          <input type="number" id="priceStep" value="100000" step="10000" min="10000" oninput="calc()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS DIVIDER -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-text">Your results</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- WATERFALL -->
+  <div class="waterfall" id="waterfall"></div>
+
+  <!-- RESULT BANNER -->
+  <div id="resultBanner"></div>
+
+  <!-- TABLE -->
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Purchase price</th>
+          <th>Stamp duty</th>
+          <th>Deposit</th>
+          <th>New loan</th>
+          <th>Repayment / mo</th>
+          <th id="thSaving">Monthly saving</th>
+          <th id="thAnnual">Annual saving</th>
+          <th>LVR</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <strong>Important:</strong> NSW stamp duty is calculated on owner-occupier rates for established homes. Repayments are principal &amp; interest over the full loan term. Offset cash minus buffer is fully deployed as deposit. Renovation budget is cash-funded and not added to the loan. Agent commission and legal/moving costs are deducted from sale proceeds. The "saving" column compares new repayment to your current repayment — enter $0 if you don't have one. This tool is for indicative modelling only and is <strong>not financial advice</strong>. Always speak with a licensed mortgage broker and financial adviser before making property decisions.
+  </div>
+
+</div>
+
+<script>
+  let mode = 'down'; // 'down' or 'up'
+
+  function setMode(m) {
+    mode = m;
+    document.getElementById('btnDown').className = 'mode-btn' + (m === 'down' ? ' active' : '');
+    document.getElementById('btnUp').className   = 'mode-btn' + (m === 'up'   ? ' active' : '');
+    const notice = document.getElementById('modeNotice');
+    if (m === 'down') {
+      notice.className = 'mode-notice down';
+      notice.innerHTML = '⬇ Downsize mode — the table shows repayment <strong>reductions</strong> as you move to a lower-value home.';
+      document.getElementById('thSaving').textContent = 'Monthly saving';
+      document.getElementById('thAnnual').textContent = 'Annual saving';
+    } else {
+      notice.className = 'mode-notice';
+      notice.innerHTML = '⬆ Upsize mode — the table shows the <strong>additional repayment</strong> required as you move to a higher-value home.';
+      document.getElementById('thSaving').textContent = 'Extra / mo';
+      document.getElementById('thAnnual').textContent = 'Extra / yr';
+    }
+    calc();
+  }
+
+  function sdNSW(p) {
+    if (p <= 0)        return 0;
+    if (p <= 16000)    return p * 0.0125;
+    if (p <= 35000)    return 200   + (p - 16000)  * 0.015;
+    if (p <= 87000)    return 485   + (p - 35000)  * 0.0175;
+    if (p <= 327000)   return 1395  + (p - 87000)  * 0.035;
+    if (p <= 1089000)  return 9795  + (p - 327000) * 0.045;
+    if (p <= 3268000)  return 44095 + (p - 1089000)* 0.055;
+    return 163940 + (p - 3268000) * 0.07;
+  }
+
+  function rpay(loan, rate, years) {
+    if (loan <= 0) return 0;
+    const r = rate / 12, n = years * 12;
+    return loan * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  }
+
+  function fmtAUD(n, showSign=false) {
+    if (isNaN(n) || n === null) return '—';
+    const abs = Math.abs(Math.round(n));
+    const str = '$' + abs.toLocaleString('en-AU');
+    if (showSign && n > 0) return '+' + str;
+    if (n < 0) return '−' + str;
+    return str;
+  }
+
+  function fmtPct(n) { return isNaN(n) ? '—' : n.toFixed(1) + '%'; }
+  function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+  function calc() {
+    const sale       = v('salePrice');
+    const mortgage   = v('mortgage');
+    const agentPct   = v('agentPct');
+    const misc       = v('miscCosts');
+    const offsetTot  = v('offsetTotal');
+    const buffer     = v('buffer');
+    const reno       = v('reno');
+    const rateAnn    = v('rate') / 100;
+    const years      = v('loanYears');
+    const currRepay  = v('currentRepay');
+    const target     = v('targetRepay');
+    const pMin       = v('priceMin');
+    const pMax       = v('priceMax');
+    const pStep      = Math.max(v('priceStep'), 1000);
+
+    const agentCost    = sale * agentPct / 100;
+    const netSale      = sale - mortgage - agentCost - misc;
+    const offsetDeploy = Math.max(0, offsetTot - buffer);
+    const funds        = netSale + offsetDeploy - reno;
+
+    // Header
+    document.getElementById('hNetSale').textContent = fmtAUD(netSale);
+    document.getElementById('hFunds').textContent   = fmtAUD(funds);
+
+    // Waterfall
+    document.getElementById('waterfall').innerHTML = `
+      <div class="wf"><p class="wf-l">Sale price</p><p class="wf-v">${fmtAUD(sale)}</p></div>
+      <div class="wf"><p class="wf-l">Less mortgage</p><p class="wf-v neg">−${fmtAUD(mortgage)}</p></div>
+      <div class="wf"><p class="wf-l">Agent + costs</p><p class="wf-v neg">−${fmtAUD(agentCost + misc)}</p></div>
+      <div class="wf"><p class="wf-l">Net proceeds</p><p class="wf-v">${fmtAUD(netSale)}</p></div>
+      <div class="wf"><p class="wf-l">Offset deployed</p><p class="wf-v pos">+${fmtAUD(offsetDeploy)}</p></div>
+      <div class="wf"><p class="wf-l">Reno budget</p><p class="wf-v neg">−${fmtAUD(reno)}</p></div>
+      <div class="wf"><p class="wf-l">Available for purchase</p><p class="wf-v hi">${fmtAUD(funds)}</p></div>
+      <div class="wf"><p class="wf-l">Buffer retained</p><p class="wf-v amb">${fmtAUD(buffer)}</p></div>
+    `;
+
+    // Build price array
+    const prices = [];
+    for (let p = pMin; p <= pMax + 0.5; p += pStep) {
+      prices.push(Math.round(p));
+      if (prices.length > 100) break;
+    }
+
+    const rows = prices.map(p => {
+      const stamp   = sdNSW(p);
+      const deposit = funds - stamp;
+      const loan    = Math.max(0, p - deposit);
+      const r       = rpay(loan, rateAnn, years);
+      // saving: positive = cheaper (downsize), negative = more expensive (upsize)
+      const diff    = currRepay - r;
+      return { p, stamp, deposit, loan, r, diff, lvr: p > 0 ? loan/p*100 : 0 };
+    });
+
+    // Find sweet spot
+    let sweetRow = null;
+    if (mode === 'down') {
+      // Highest price where repayment < target
+      for (let i = rows.length-1; i >= 0; i--) {
+        if (rows[i].r > 0 && rows[i].r < target) { sweetRow = rows[i]; break; }
+      }
+    } else {
+      // Upsize: lowest price where repayment > current (meaningful upsize) but still affordable
+      for (let i = 0; i < rows.length; i++) {
+        if (rows[i].r <= target) { sweetRow = rows[i]; }
+      }
+    }
+    const freeRow = rows.find(r => r.loan === 0);
+
+    // Header stats
+    if (sweetRow) {
+      document.getElementById('hRepay').textContent  = fmtAUD(sweetRow.r) + '/mo';
+      document.getElementById('hSaving').textContent = fmtAUD(Math.abs(sweetRow.diff)) + '/mo';
+    } else {
+      document.getElementById('hRepay').textContent  = '—';
+      document.getElementById('hSaving').textContent = '—';
+    }
+
+    // Banner
+    const banner = document.getElementById('resultBanner');
+    if (mode === 'down') {
+      if (sweetRow) {
+        banner.innerHTML = `
+          <div class="result-banner sweet">
+            <p class="banner-eyebrow">✦ Sweet spot — best value downsize</p>
+            <p class="banner-head">Buy at ${fmtAUD(sweetRow.p)} → <span>${fmtAUD(sweetRow.r)}/mo</span></p>
+            <p class="banner-sub">Saves <strong>${fmtAUD(sweetRow.diff)}/mo</strong> · ${fmtAUD(sweetRow.diff * 12)}/yr · New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Buffer ${fmtAUD(buffer)}</p>
+          </div>`;
+      } else if (freeRow) {
+        banner.innerHTML = `
+          <div class="result-banner sweet">
+            <p class="banner-eyebrow">✦ Exceptional result — mortgage free</p>
+            <p class="banner-head">Buy at ${fmtAUD(freeRow.p)} with <span>no mortgage</span></p>
+            <p class="banner-sub">Your equity fully covers this purchase. Cash buffer retained: ${fmtAUD(buffer)}.</p>
+          </div>`;
+      } else {
+        banner.innerHTML = `
+          <div class="result-banner none">
+            <p class="banner-eyebrow">No sweet spot found</p>
+            <p class="banner-head">Adjust your settings to find a target</p>
+            <p class="banner-sub">Try a higher sale price, lower purchase range, or raise your repayment target.</p>
+          </div>`;
+      }
+    } else {
+      // Upsize mode
+      if (sweetRow) {
+        const extra = sweetRow.r - currRepay;
+        banner.innerHTML = `
+          <div class="result-banner upsize">
+            <p class="banner-eyebrow">🔑 Best value upsize within your target</p>
+            <p class="banner-head">Buy at ${fmtAUD(sweetRow.p)} → <span>${fmtAUD(sweetRow.r)}/mo</span></p>
+            <p class="banner-sub">${extra > 0 ? `<strong>+${fmtAUD(extra)}/mo</strong> more than current · ` : 'Within current repayment · '}New loan ${fmtAUD(sweetRow.loan)} · LVR ${fmtPct(sweetRow.lvr)} · Stamp duty ${fmtAUD(sweetRow.stamp)}</p>
+          </div>`;
+      } else {
+        banner.innerHTML = `
+          <div class="result-banner none">
+            <p class="banner-eyebrow">No result within target</p>
+            <p class="banner-head">All options exceed your repayment target</p>
+            <p class="banner-sub">Try raising your repayment target, increasing your sale price, or adjusting the purchase range.</p>
+          </div>`;
+      }
+    }
+
+    // Table
+    const tbody = document.getElementById('tbody');
+    tbody.innerHTML = '';
+    rows.forEach(row => {
+      const { p, stamp, deposit, loan, r, diff, lvr } = row;
+      const isFree    = loan === 0;
+      const isSweet   = sweetRow && p === sweetRow.p;
+      const isOver    = mode === 'down' ? (r >= target && !isFree) : (r > target);
+
+      let rowClass = '', badge = '', bClass = '';
+      if (isFree) {
+        rowClass = 'row-free'; badge = '✦ Mortgage free'; bClass = 'b-free';
+      } else if (isSweet && mode === 'down') {
+        rowClass = 'row-sweet'; badge = '✦ Sweet spot'; bClass = 'b-sweet';
+      } else if (isSweet && mode === 'up') {
+        rowClass = 'row-upsweet'; badge = '🔑 Best value'; bClass = 'b-up';
+      } else if (!isOver) {
+        badge = 'On target'; bClass = 'b-ok';
+      } else {
+        rowClass = 'row-over'; badge = mode === 'down' ? 'Over target' : 'Over budget'; bClass = 'b-over';
+      }
+
+      const diffDisplay = mode === 'down'
+        ? `<span class="${diff > 0 ? 'saving-pos' : 'saving-neg'}">${diff >= 0 ? '' : '+'}${fmtAUD(diff)}/mo</span>`
+        : `<span class="${diff < 0 ? 'saving-neg' : 'saving-pos'}">${diff < 0 ? '+' + fmtAUD(Math.abs(diff)) : fmtAUD(diff)}/mo</span>`;
+
+      const annualDisplay = mode === 'down'
+        ? `<span class="${diff > 0 ? 'saving-pos' : 'saving-neg'}">${fmtAUD(diff * 12)}/yr</span>`
+        : `<span class="${diff < 0 ? 'saving-neg' : 'saving-pos'}">${diff < 0 ? '+' + fmtAUD(Math.abs(diff)*12) : fmtAUD(diff*12)}/yr</span>`;
+
+      const tr = document.createElement('tr');
+      if (rowClass) tr.className = rowClass;
+      tr.innerHTML = `
+        <td>${fmtAUD(p)}</td>
+        <td>${fmtAUD(stamp)}</td>
+        <td>${fmtAUD(Math.max(0, deposit))}</td>
+        <td>${isFree ? '—' : fmtAUD(loan)}</td>
+        <td class="${isOver && !isFree ? 'repay-over' : ''}">${isFree ? 'Nil' : fmtAUD(r) + '/mo'}</td>
+        <td>${diffDisplay}</td>
+        <td>${annualDisplay}</td>
+        <td>${isFree ? '0.0%' : fmtPct(lvr)}</td>
+        <td><span class="badge ${bClass}">${badge}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  calc();
+</script>
+</body>
+</html>
